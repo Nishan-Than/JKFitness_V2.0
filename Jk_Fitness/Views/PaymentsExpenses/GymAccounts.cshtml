@@ -1,19 +1,27 @@
 ﻿
-@{
+@{ 
     ViewData["Title"] = "GymAccounts";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
 }
+
+<style>
+    @*@media print {
+        .noPrint{
+        display:none;
+    }
+}*@
+</style>
 
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <div class="form-group">
-                    <h3 class="card-title">View Membership Payments</h3>
+                    <h3 class="card-title">GYM Accounts</h3>
                 </div>
             </div>
             <div class="card-body">
-                <div class="row">
+                <div class="row noPrint">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label>Branch</label>
@@ -28,6 +36,11 @@
                             <div class="col-md-12 col-sm-12 ">
                                 <select class="form-control" id="Year"></select>
                             </div>
+                        </div>
+                    </div>                 
+                    <div class="col-md-2" style="padding-top:30px">
+                        <div class="form-group">
+                            <button type="button" onclick="window.print();" class="btn btn-secondary col-md-12 col-sm-12 noprint"><i class="fa fa-download"></i> Download Report</button>
                         </div>
                     </div>
                 </div>
