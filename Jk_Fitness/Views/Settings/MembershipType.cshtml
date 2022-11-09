@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewData["Title"] = "Membership Types";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*Initially Table and button loading*@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Display Membership Package Details</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label><strong style="color: red">Membership packages cannot delete until it depends on other records in the application.</strong></label>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Package Name</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="MembershipName" class="form-control" placeholder="Enter Membership Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Package Code</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="MembershipCode" class="form-control" placeholder="Enter Membership Code">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="float:right">
+                                <button type="button" id="btnSearch" class="btn btn-secondary"><i class="fa fa-search"></i> Search</button>
+                                <button type="button" id="btnAdd" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="tblMembershipTypes" class="table table-bordered table-striped tblMembershipTypes">
+                    <thead>
+                        <tr>
+                            <th>Package Code</th>
+                            <th>Package Name</th>
+                            <th>Months Per Package</th>
+                            <th>Package Amount</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetMembershipTypeDetails" value="@Url.Action("GetMembershipTypeDetails", "Settings")" />
+    <input type="hidden" id="SaveMembershipType" value="@Url.Action("SaveMembershipType", "Settings")" />
+    <input type="hidden" id="UpdateMembershipType" value="@Url.Action("UpdateMembershipType", "Settings")" />
+    <input type="hidden" id="GetMembershipTypeById" value="@Url.Action("GetMembershipTypeById", "Settings")" />
+    <input type="hidden" id="DeleteMembershipType" value="@Url.Action("DeleteMembershipType", "Settings")" />
+    <input type="hidden" id="SearchMembershipType" value="@Url.Action("SearchMembershipType", "Settings")" />
+    <input type="hidden" id="add" value="@ViewBag.Add" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+</div>
+
+@* Add new Branch and EDIT Branch Popup *@
+<div id="MembershipTypeModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Membership Package Details</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form id="formUser" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="MembershipId" />
+
+                            <div class="form-group row" id="MembershipField" style="display:none;">
+                                <label class="control-label col-md-4 col-sm-4">Package Code</label>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" required id="Mcode" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-4 col-sm-4 ">Package Name</label>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" id="Mname" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-4 col-sm-4 ">Months Per Package</label>
+                                <div class="col-md-8 col-sm-8">
+                                    <select class="form-control" id="Months"></select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-4 col-sm-4 ">Package Amount</label>
+                                <div class="col-md-8 col-sm-8 ">
+                                    <input type="text" id="MemAmount" class="form-control">
+                                    <span id="Rfrm" class="error" style="color: red;display:none">
+                                        Should be Numeric Value
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Enabled" value="true">
+                                <label for="Enabled" class="custom-control-label">Enable</label>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div style="float:right">
+                                    <button type="button" id="btnAddMembership" class="btn btn-success">Save</button>
+                                    <button type="button" onclick="Cancel()" class="btn btn-warning">Cancel</button>
+                                </div>
+                            </div>
+                            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/page.membershipTypes.js"></script>

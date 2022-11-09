@@ -1,0 +1,479 @@
+﻿@using Microsoft.AspNetCore.Http;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - JK Fitness</title>
+    <link rel="icon" href="~/dist/img/jkfitness.jpeg" />
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="~/plugins/fontawesome-free/css/all.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="~/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="~/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="~/plugins/jqvmap/jqvmap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- Theme style -->
+    <link rel="stylesheet" href="~/dist/css/adminlte.min.css">
+    <!-- overlayScrollbars -->
+    <link rel="stylesheet" href="~/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <!-- Daterange picker -->
+    <link rel="stylesheet" href="~/plugins/daterangepicker/daterangepicker.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="~/plugins/summernote/summernote-bs4.min.css">
+    <link href="~/css/custom.css" rel="stylesheet" />
+    <link href="~/css/ecommerce.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@9.5.3/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9.5.3/dist/sweetalert2.all.min.js"></script>
+    <link href="~/plugins/DataTableNew/datatables.min.css" rel="stylesheet" />
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+    <div class="wrapper">
+
+        <!-- Navbar -->
+        <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+                </li>
+            </ul>
+            <!-- Right navbar links -->
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link" data-toggle="dropdown" href="#">
+                        <i class="far fa-bell"></i>
+                        <span id="totalCount" class="badge badge-warning navbar-badge"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                        <span class="dropdown-item dropdown-header"> Notifications</span>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item">
+                            Package Expiration Last Month
+                            <span id="packLastMonth" style="color:cornflowerblue"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item">
+                            Package Expiration This Month
+                            <span id="packThisMonth" style="color:cornflowerblue"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item">
+                            Package Expiration Next Month
+                            <span id="packNextMonth" style="color:cornflowerblue"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item">
+                            Membership Expiration Last Month
+                            <span id="memLastMonth" style="color:cornflowerblue"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item">
+                            Membership Expiration This Month
+                            <span id="memThisMonth" style="color:cornflowerblue"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item">
+                            Membership Expiration Next Month
+                            <span id="memNextMonth" style="color:cornflowerblue"></span>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="@Url.Action("Index", "Notification")" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    </div>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">
+                        <img src="~/dist/img/default.jpg" id="UserImg" alt="AdminLTE Logo" class="img-size-32 mr-3 img-circle">
+                        <span id="Name"></span> <b class="caret"></b>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="@Url.Action("Profile", "Employee")" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="SignOut()" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <!-- /.navbar -->
+        <!-- Main Sidebar Container -->
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <!-- Brand Logo -->
+            <a href="./" class="brand-link">
+                <img src="~/dist/img/jkfitness.jpeg" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+                <span class="brand-text font-weight-light">Jk_fitness</span>
+            </a>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Sidebar Menu -->
+                <nav class="mt-2">
+                    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                        <!-- Add icons to the links using the .nav-icon class with font-awesome or any other icon font library -->
+
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    Dashboard
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="MenuHome">
+                                    <a href="@Url.Action("Index", "Home")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Home</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="MenuEmployee">
+                                    <a href="@Url.Action("Index", "Employee")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Employee</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="MenuMemebership">
+                                    <a href="@Url.Action("Index", "Membership")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Membership</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="MenuMemebersService">
+                                    <a href="@Url.Action("MembersService", "Membership")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Members Service</p>
+                                    </a>
+                                </li>
+                                @*<li class="nav-item" id="MenuAttendance">
+                                        <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Attendance</p>
+                                        </a>
+                                    </li>*@
+                                <li class="nav-item" id="AddAttendance">
+                                    <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Attende</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="ViewAttendance">
+                                    <a href="@Url.Action("ViewMembershipAttendance", "Membership")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>View Attendance</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" id="MailBox">
+                                    <a href="@Url.Action("Index", "Mailbox")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Mail Box</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item" id="ProvisionalMember">
+                                    <a href="@Url.Action("ProvisionalMember", "Membership")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Provisional Member</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-inbox"></i>
+                                <p>
+                                    Store
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="Product">
+                                    <a href="@Url.Action("Index", "Product")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Product</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="SellProduct">
+                                    <a href="@Url.Action("ProductList", "Product")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sell Products</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="ViewSoldProduct">
+                                    <a href="@Url.Action("ViewSoldProducts", "Product")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>View Sold Products</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-circle"></i>
+                                <p>
+                                    Payments & Expenses
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="MembershipPayments">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Membership Payments
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item" id="NewPayment">
+                                            <a href="@Url.Action("Membership", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>New Payments</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" id="ViewPayment">
+                                            <a href="@Url.Action("ViewMembershipPayments", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>View Payments</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="StaffPayments">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Salary Payments
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item" id="AdvanceSalaryPayment">
+                                            <a href="@Url.Action("AdvanceSalaryPayment", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Advance Payments</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" id="SalaryPayment">
+                                            <a href="@Url.Action("SalaryPayment", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>Staff Payments</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" id="ViewSalaryPayment">
+                                            <a href="@Url.Action("ViewSalaryPayment", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>View Payments</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>
+                                            Personal Training
+                                            <i class="right fas fa-angle-left"></i>
+                                        </p>
+                                    </a>
+                                    <ul class="nav nav-treeview">
+                                        <li class="nav-item" id="PersonalTraining">
+                                            <a href="@Url.Action("PersonalTraining", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>New Payments</p>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item" id="ViewPersonalTraining">
+                                            <a href="@Url.Action("ViewPersonalTraining", "PaymentsExpenses")" class="nav-link">
+                                                <i class="far fa-dot-circle nav-icon"></i>
+                                                <p>View Payments</p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="MenuInternalExpenses">
+                                    <a href="@Url.Action("InternalExpenses", "Settings")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Internal Expenses</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-cog"></i>
+                                <p>
+                                    Setting
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="MenuBranch">
+                                    <a href="@Url.Action("Branch", "Settings")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Branch</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="MenuExpensesType">
+                                    <a href="@Url.Action("ExpensesType", "Settings")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Expense Types</p>
+                                    </a>
+                                </li>                               
+                                <li class="nav-item" id="MenuMembershipPackage">
+                                    <a href="@Url.Action("MembershipType", "Settings")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Membership Packages</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="MenuSalary">
+                                    <a href="@Url.Action("Salary", "Employee")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Salary Management</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="MenuRights">
+                                    <a href="@Url.Action("MenuRights", "Settings")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Roles and Access Rights</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item" id="GymAccounts">
+                            <a href="@Url.Action("GymAccounts", "PaymentsExpenses")" class="nav-link active">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>
+                                    Gym Accounts
+                                </p>
+                            </a>
+                        </li>
+                        @*<li class="nav-item">
+                            <a href="#" class="nav-link active">
+                                <i class="nav-icon fas fa-inbox"></i>
+                                <p>
+                                    Report
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item" id="Product">
+                                    <a href="@Url.Action("MembershipReport", "Membership")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Members Report</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="SellProduct">
+                                    <a href="@Url.Action("ViewSoldProductsReport", "Product")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Sell Products Report</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item" id="ViewSoldProduct">
+                                    <a href="@Url.Action("MembershipPaymentsReport", "PaymentsExpenses")" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Membership Payment Report</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>*@
+
+                    </ul>
+                </nav>
+                <!-- /.sidebar-menu -->
+                <input type="hidden" id="SignOutLogin" value="@Url.Action("SignOutLogin","Login")" />
+                <input type="hidden" id="LoginHome" value="@Url.Action("Index","Login")" />
+                <input type="hidden" id="GetUserRights" value="@Url.Action("GetUserRights","Settings")" />
+                <input type="hidden" id="GetNotificationDetails" value="@Url.Action("GetNotifications", "Notification")" />
+            </div>
+            <!-- /.sidebar -->
+        </aside>
+        <!-- /.Main Sidebar Container -->
+
+        <div class="content-wrapper">
+            <main role="main" class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </main>
+        </div>
+
+        <footer class="main-footer">
+            <div class="float-right d-none d-sm-inline-block">
+                <b>Version</b> 2.0
+            </div>
+        </footer>
+
+        <!-- Control Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <!-- Control sidebar content goes here -->
+        </aside>
+        <!-- /.control-sidebar -->
+    </div>
+
+
+    <script src="~/js/page.layout.js"></script>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.js"></script>
+    <!-- jQuery -->
+    <script src="~/plugins/jquery/jquery.min.js"></script>
+    <!-- jQuery UI 1.11.4 -->
+    <script src="~/plugins/jquery-ui/jquery-ui.min.js"></script>
+    <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+    <script>
+        $.widget.bridge('uibutton', $.ui.button)
+    </script>
+    <!-- Bootstrap 4 -->
+    <script src="~/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- ChartJS -->
+    <script src="~/plugins/chart.js/Chart.min.js"></script>
+    <!-- Sparkline -->
+    <!--<script src="~/plugins/sparklines/sparkline.js"></script>-->
+    <!-- JQVMap -->
+    <!--<script src="~/plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="~/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>-->
+    <!-- jQuery Knob Chart -->
+    <script src="~/plugins/jquery-knob/jquery.knob.min.js"></script>
+    <!-- daterangepicker -->
+    <script src="~/plugins/moment/moment.min.js"></script>
+    <script src="~/plugins/daterangepicker/daterangepicker.js"></script>
+    <!-- Tempusdominus Bootstrap 4 -->
+    <script src="~/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
+    <!-- Summernote -->
+    <script src="~/plugins/summernote/summernote-bs4.min.js"></script>
+    <!-- overlayScrollbars -->
+    <script src="~/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="~/dist/js/adminlte.js"></script>
+    <!-- AdminLTE for demo purposes -->
+    <script src="~/dist/js/demo.js"></script>
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    @*<script src="~/dist/js/pages/dashboard.js"></script>*@
+
+    <script src="~/plugins/DataTableNew/datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.debug.js"></script>
+    <script src="~/plugins/DataTableNew/Buttons-1.5.6/js/dataTables.buttons.min.js"></script>
+    <script src="~/plugins/DataTableNew/Buttons-1.5.6/js/buttons.bootstrap4.min.js"></script>
+    <script src="~/plugins/DataTableNew/jszip.min.js"></script>
+    <script src="~/plugins/DataTableNew/pdfmake.min.js"></script>
+    <script src="~/plugins/DataTableNew/vfs_fonts.js"></script>
+    <script src="~/plugins/DataTableNew/Buttons-1.5.6/js/buttons.html5.js"></script>
+    <script src="~/plugins/DataTableNew/Buttons-1.5.6/js/buttons.print.js"></script>
+</body>
+</html>

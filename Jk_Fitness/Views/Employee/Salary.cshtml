@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewData["Title"] = "Salary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*Initially Table and button loading*@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Salary Management</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="BranchforSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="NameforSearch" class="form-control" placeholder="Enter First Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="tblEmployee" class="table table-bordered table-striped tblEmployee">
+                    <thead>
+                        <tr>
+                            <th>Employee Id</th>
+                            <th>Name</th>
+                            <th>Branch</th>
+                            <th>User Type</th>
+                            <th>Status</th>
+                            <th>Salary</th>
+                            <th id="Action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetEmployeeDetailsPath" value="@Url.Action("GetEmployeeDetails","Employee")" />
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Employee")" />
+    <input type="hidden" id="UpdateSalary" value="@Url.Action("UpdateSalary", "Employee")" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+</div>
+
+<div id="EmpModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Salary Management</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form id="formUser" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="EmployeeId" />
+                            
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Salary</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" id="Salary" class="form-control">
+                                    <span id="SaAlert" class="error" style="color: red;display:none">
+                                        Should be Numeric Value
+                                    </span>
+                                </div>
+                            </div>
+                           
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div style="float:right">
+                                    <button type="button" id="btnUpdateSalary" class="btn btn-success">Update</button>
+                                    <button type="button" onclick="Cancel()" class="btn btn-warning">Cancel</button>
+                                </div>
+                            </div>
+                            <div id="waitform" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/page.salaryManagement.js"></script>

@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewData["Title"] = "Membership Payments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">MemberShip Payments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2">Membership No</label>
+                    <div class="col-md-2 col-sm-2">
+                        <input type="text" class="form-control" id="MebershipNo">
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <button type="button" id="btnSearch" class="btn btn-success form-control"><i class="fa fa-search"></i> Find</button>
+                    </div>
+                    <div class="col-md-2 col-sm-2">
+                        <button type="button" id="btnClear" class="btn btn-warning form-control">Clear</button>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2">First Name</label>
+                    <div class="col-md-3 col-sm-3">
+                        <input type="text" class="form-control" id="Fname" disabled>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2 ">Last Name</label>
+                    <div class="col-md-3 col-sm-3">
+                        <input type="text" id="Lname" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2 ">Branch</label>
+                    <div class="col-md-3 col-sm-3">
+                        <input type="text" id="Branch" class="form-control" disabled>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2 ">Package Type</label>
+                    <div class="col-md-3 col-sm-3">
+                        @*<input type="text" id="Mtype" class="form-control" disabled>*@
+                        <select class="form-control" id="PackageId" onchange="LoadMemberShipAmount()"></select>
+                    </div>
+                    @*<input type="hidden" id="PackageId" />*@
+                    <div class="col-md-3 col-sm-3" id="Past">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="PastPay" value="true">
+                            <label for="PastPay" class="custom-control-label">Past Payment</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2 ">Package Amount</label>
+                    <div class="col-md-3 col-sm-3">
+                        <input type="text" id="Mamount" class="form-control" disabled>
+                    </div>
+                    <div class="col-md-3 col-sm-3" id="Partial">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="PartialPay" value="true">
+                            <label for="PartialPay" class="custom-control-label">Partial Payment</label>
+                        </div>
+                    </div>                   
+                    <div class="col-md-3 col-sm-3" id="Advance">
+                        <div class="custom-control custom-checkbox">
+                            <input class="custom-control-input" type="checkbox" id="AdvancePay" value="true" disabled>
+                            <label for="AdvancePay" class="custom-control-label">Advance Payment</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row ">
+                    <label class="control-label col-md-2 col-sm-2 ">Payment Date</label>
+                    <div class="input-group date col-md-3 col-sm-3" id="date" data-target-input="nearest">
+                        <input type="text" id="PaymentDate" class="form-control datetimepicker-input" data-target="#date" data-toggle="datetimepicker" />
+                        <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div id="PartitalFields">
+                    <div class="form-group row">
+                        <label class="control-label col-md-2 col-sm-2 ">Partial Amount</label>
+                        <div class="col-md-3 col-sm-3">
+                            <input type="text" required id="Pamount" class="form-control">
+                            <span id="amtValid" class="error" style="color: red;display:none">
+                                Should be Numeric Value
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-2 col-sm-2 ">Balance Amount</label>
+                        <div class="col-md-3 col-sm-3">
+                            <input type="text" required id="Bamount" class="form-control" disabled>
+                        </div>
+                    </div>
+                    <div class="card-footer table-responsive col-md-6 col-sm-6" id="PartialPayTbl">
+                        <table id="tblPayments" class="table table-bordered table-striped tblMember">
+                            <thead>
+                                <tr>
+                                    <th>Paid Date</th>
+                                    <th>Paid Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbodyid">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="col-md-1 col-sm-1">
+                    <button type="button" id="btnSavePay" class="btn btn-success form-control"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+    <input type="hidden" id="GetMemberDetails" value="@Url.Action("GetMembershipDetails", "PaymentsExpenses")" />
+    <input type="hidden" id="SaveMembershipPayment" value="@Url.Action("SaveMembershipPayment", "PaymentsExpenses")" />
+    <input type="hidden" id="SaveMembershipPartialPayment" value="@Url.Action("SaveMemberPartialPayment", "PaymentsExpenses")" />
+    <input type="hidden" id="UpdateMembershipPayment" value="@Url.Action("UpdateMembershipPayment", "PaymentsExpenses")" />
+    <input type="hidden" id="DeleteMembershipPartialPayment" value="@Url.Action("DeleteMemberPartialPayment", "PaymentsExpenses")" />
+    <input type="hidden" id="GetMembershipTypeDetails" value="@Url.Action("GetEnabledMembershipTypeDetails", "Settings")" />
+</div>
+<script src="~/js/page.membership-payment.js"></script>

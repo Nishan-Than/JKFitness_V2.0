@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "ViewSoldProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Sold Products Details</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Branch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Year</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Year"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Month</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Month"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="tblSoldProduct" class="table table-bordered table-striped tblSoldProduct">
+                    <thead>
+                        <tr>
+                            <th>Product Id</th>
+                            <th>Product Name</th>
+                            <th>Branch</th>
+                            <th>Price Per Product</th>
+                            <th>Sold Price</th>
+                            <th>Total Sold Price</th>
+                            <th>Sold Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetSoldProducts" value="@Url.Action("LoadSoldProductsList","Product")" />
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership")" />
+    <input type="hidden" id="GetStartandEndYear" value="@Url.Action("GetStartandEndYear", "PaymentsExpenses")" />
+    <input type="hidden" id="DeleteSoldProduct" value="@Url.Action("DeleteSoldProduct", "Product")" />
+
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+
+</div>
+
+<script src="~/js/page.viewSold-Products.js"></script>

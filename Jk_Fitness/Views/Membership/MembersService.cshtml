@@ -1,0 +1,81 @@
+﻿
+@{ ViewData["Title"] = "Membership";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">MemberShip Details</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="BranchforSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Status</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="StatusforSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="GenderforSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Filter details</label>
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="col-md-4 col-sm-4">
+                                    <select class="form-control" id="SearchOptions"></select>
+                                </div>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" id="ValueforSearch" class="form-control" placeholder="Enter search value">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="example1" class="table table-bordered table-striped tblMember">
+                    <thead>
+                        <tr>
+                            <th>MemberShip Id</th>
+                            <th style="width: 255px;">Name</th>
+                            <th>NIC</th>
+                            <th>Phone No</th>
+                            <th>PackageExpirationDate</th>
+                            <th>MembershipExpirationDate</th>
+                            <th>Active Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership")" />
+    <input type="hidden" id="GetMemberDetails" value="@Url.Action("GetMemberDetails", "Membership")" />
+    <input type="hidden" id="SearchMembers" value="@Url.Action("SearchMembers", "Membership")" />
+</div>
+<script src="~/js/page.membersService.js"></script>

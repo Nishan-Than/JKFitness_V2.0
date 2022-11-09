@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewData["Title"] = "Branch Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*Initially Table and button loading*@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Branch Details</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <label><strong style="color: red">Branches cannot delete until it depends on other records in the application.</strong></label>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Branch Name</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="BranchName" class="form-control" placeholder="Enter Branch Name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Branch Code</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="BranchCode" class="form-control" placeholder="Enter Branch Code">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="float:right">
+                                <button type="button" id="btnSearch" class="btn btn-secondary"><i class="fa fa-search"></i> Search</button>
+                                <button type="button" id="btnAdd" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="tblBranch" class="table table-bordered table-striped tblBranch">
+                    <thead>
+                        <tr>
+                            <th>Branch Code</th>
+                            <th>Branch Name</th>
+                            <th>InitialRange</th>
+                            @*<th>Month Range-Active Member</th>*@
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Settings")" />
+    <input type="hidden" id="SaveBranch" value="@Url.Action("SaveBranch", "Settings")" />
+    <input type="hidden" id="Updatebranch" value="@Url.Action("Updatebranch", "Settings")" />
+    <input type="hidden" id="GetBranchById" value="@Url.Action("GetBranchById", "Settings")" />
+    <input type="hidden" id="DeleteBranch" value="@Url.Action("DeleteBranch", "Settings")" />
+    <input type="hidden" id="SearchBranch" value="@Url.Action("SearchBranch", "Settings")" />
+    <input type="hidden" id="add" value="@ViewBag.Add" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+</div>
+
+@* Add new Branch and EDIT Branch Popup *@
+<div id="BranchModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Branch Details</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form id="formUser" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="BranchId" />
+                            
+                            <div class="form-group row" id="BranchField" style="display:none;">
+                                <label class="control-label col-md-4 col-sm-4">Branch Code</label>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" required id="Bcode" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-4 col-sm-4 ">Branch Name</label>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" id="Bname" class="form-control">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="control-label col-md-4 col-sm-4 ">MembershipInitialRangeFrom</label>
+                                <div class="col-md-8 col-sm-8 ">
+                                    <input type="text" id="InRangefrom" class="form-control" disabled>
+                                    <span id="Rfrm" class="error" style="color: red;display:none">
+                                        Should be Numeric Value
+                                    </span>
+                                    <span id="RfrmId" class="error" style="color: red;display:none">
+                                        Cannot overlap existing ID range
+                                    </span>
+                                    <span id="RfrmDif" class="error" style="color: red;display:none">
+                                        Start range should be less than from range
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-4 col-sm-4 ">MembershipInitialRangeTo</label>
+                                <div class="col-md-8 col-sm-8 ">
+                                    <input type="text" id="InRangeTo" class="form-control" disabled>
+                                    <span id="Rto" class="error" style="color: red;display:none">
+                                        Should be Numeric Value
+                                    </span>
+                                    <span id="RtoID" class="error" style="color: red;display:none">
+                                        Cannot overlap existing ID range
+                                    </span>
+                                    <span id="RtoDif" class="error" style="color: red;display:none">
+                                        End range should be greater than start range
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row" hidden>
+                                <label class="control-label col-md-4 col-sm-4 ">MembershipActiveMonthRange</label>
+                                <div class="col-md-8 col-sm-8 ">
+                                    <input type="text" id="MonthRange" value="0" class="form-control">
+                                    <span id="mRange" class="error" style="color: red;display:none">
+                                        Should be Numeric Value
+                                    </span>
+                                    <span id="ValidRange" class="error" style="color: red;display:none">
+                                        Invalid Month Range
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div style="float:right">
+                                    <button type="button" id="btnAddBranch" class="btn btn-success">Save</button>
+                                    <button type="button" onclick="Cancel()" class="btn btn-warning">Cancel</button>
+                                </div>
+                            </div>
+                            <div id="wait" style="display:none;position:fixed;top:30%;left:50%;padding:2px;"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/page.branch.js"></script>
+

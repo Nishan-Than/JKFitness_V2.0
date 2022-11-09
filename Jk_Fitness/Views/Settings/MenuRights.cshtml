@@ -1,0 +1,41 @@
+﻿
+@{
+    ViewData["Title"] = "MenuRights";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Roles and Access Rights</h3>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="tblMenu" class="table table-bordered table-striped tblMenu">
+                    <thead>
+                        <tr>
+                            <th>Main Menu</th>
+                            <th>Admin</th>
+                            <th>Staff</th>
+                            <th>Temporary Staff</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetMenuRights" value="@Url.Action("GetMenuRights", "Settings")" />
+    <input type="hidden" id="UpdateMenuRights" value="@Url.Action("UpdateMenuRights", "Settings")" />
+</div>
+
+<script src="~/js/page.menuRights.js"></script>

@@ -1,0 +1,265 @@
+﻿@using Microsoft.AspNetCore.Http;
+@{
+    ViewData["Title"] = "Employee Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*Initially Table and button loading*@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Employee Details</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="BranchforSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>First Name</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="NameforSearch" class="form-control" placeholder="Enter First Name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="float:right">
+                                <button type="button" id="btnAdd" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="tblEmployee" class="table table-bordered table-striped tblEmployee">
+                    <thead>
+                        <tr>
+                            <th>Employee Id</th>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Branch</th>
+                            <th>User Type</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetEmployeeDetailsPath" value="@Url.Action("GetEmployeeDetails","Employee")" />
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Employee")" />
+    <input type="hidden" id="GetUserTypeDetails" value="@Url.Action("GetUserTypeDetails", "Employee")" />
+    <input type="hidden" id="SaveEmployees" value="@Url.Action("SaveEmployees", "Employee")" />
+    <input type="hidden" id="UpdateEmployees" value="@Url.Action("UpdateEmployees", "Employee")" />
+    @*<input type="hidden" id="GetEmployeeById" value="@Url.Action("GetEmployeeById", "Employee")" />*@
+    <input type="hidden" id="DeleteEmployees" value="@Url.Action("DeleteEmployees", "Employee")" />
+    <input type="hidden" id="SearchEmployees" value="@Url.Action("SearchEmployees", "Employee")" />
+    <input type="hidden" id="GetMemberDetails" value="@Url.Action("GetMembershipDetails", "Employee")" />
+    <input type="hidden" id="add" value="@ViewBag.Add" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+    <input type="hidden" id="view" value="@ViewBag.View" />
+</div>
+
+@* Add new Employee and EDIT Employee Popup *@
+<div id="EmpModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Employee Details</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form id="formUser" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="EmployeeId" />
+                            <div class="form-group row" id="MemFind" style="display:flex">
+                                <label class="control-label col-md-3 col-sm-3">Membership No</label>
+                                <div class="col-md-3 col-sm-3">
+                                    <input type="text" class="form-control" id="MebershipNo">
+                                </div>
+                                <div class="col-md-3 col-sm-3">
+                                    <button type="button" id="btnSearch" class="btn btn-success form-control"><i class="fa fa-search"></i> Find</button>
+                                </div>
+                                <div class="col-md-3 col-sm-3">
+                                    <button type="button" id="btnClear" class="btn btn-warning form-control">Clear</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9 col-sm-9">
+                                    <div class="form-group row ">
+                                        <label class="control-label col-md-4 col-sm-4 ">Salutation</label>
+                                        <div class="col-md-8 col-sm-8">
+                                            <select class="form-control" id="Salutation"></select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="control-label col-md-4 col-sm-4 ">First Name</label>
+                                        <div class="col-md-8 col-sm-8">
+                                            <input type="text" required id="Fname" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="control-label col-md-4 col-sm-4 ">Last Name</label>
+                                        <div class="col-md-8 col-sm-8">
+                                            <input type="text" required id="Lname" class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="control-label col-md-4 col-sm-4 ">Image</label>
+                                        <div class="col-md-8 col-sm-8">
+                                            <div class="custom-file">
+                                                <input type="file" id="imageBrowes" class="form-control custom-file-input" />
+                                                <label class="custom-file-label">Choose File....</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row ">
+                                        <label class="control-label col-md-4 col-sm-4 ">House No/Name</label>
+                                        <div class="col-md-8 col-sm-8">
+                                            <input type="text" required id="HouseNo" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3 col-sm-3">
+                                    <div class="form-group row">
+                                        <div id="imgPreview" class="img-thumbnail" style="display:block">
+                                            <img src="~/dist/img/default.jpg" id="targetImg" style="width:100%;height:240px;" />
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Street</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" id="Street" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3">District</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" required id="District" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Province</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" id="Province" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-3 ">Email</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" id="Email" class="form-control">
+                                    <span id="EmailAlert" class="error" style="color: red;display:none">
+                                        Please enter a vaild Email Address
+                                    </span>
+                                    <span id="EmailUniqueAlert" class="error" style="color: red;display:none">
+                                        Email Address Should be Unique
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Contact No</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" id="ContactNo" class="form-control" placeholder="771234567">
+                                    <span id="ContactAlert" class="error" style="color: red;display:none">
+                                        Please enter a vaild Phone No
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-3 ">Branch</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <select class="form-control" id="Branch"></select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-3 ">User Type</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <select class="form-control" id="UserType"></select>
+                                </div>
+                            </div>
+                            <div class="bootstrap-timepicker">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-3">Morning Start Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker" data-target-input="nearest">
+                                        <input type="text" id="MorningIn" class="form-control datetimepicker-input" data-target="#timepicker" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <label class="control-label col-md-3 col-sm-3">Morning End Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker1" data-target-input="nearest">
+                                        <input type="text" id="MorningOut" class="form-control datetimepicker-input" data-target="#timepicker1" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bootstrap-timepicker">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-3">Evening Start Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker2" data-target-input="nearest">
+                                        <input type="text" id="EveningIn" class="form-control datetimepicker-input" data-target="#timepicker2" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker2" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <label class="control-label col-md-3 col-sm-3" @*style="text-align:center"*@>Evening End Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker3" data-target-input="nearest">
+                                        <input type="text" id="EveningOut" class="form-control datetimepicker-input" data-target="#timepicker3" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker3" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="custom-control custom-checkbox">
+                                <input class="custom-control-input" type="checkbox" id="Status" value="true">
+                                <label for="Status" class="custom-control-label">Active</label>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div style="float:right">
+                                    <button type="button" id="btnAddEmployee" class="btn btn-success">Save</button>
+                                    <button type="button" id="btnCancel" onclick="Cancel()" class="btn btn-warning">Cancel</button>
+                                </div>
+                            </div>
+                            <div id="waitform" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/page.employee.js"></script>

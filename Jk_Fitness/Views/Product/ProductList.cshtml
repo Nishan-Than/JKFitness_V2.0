@@ -1,0 +1,78 @@
+﻿
+@{
+    ViewData["Title"] = "ProductList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .searchBox {
+        background-color: lightgrey;
+        padding: 10px;
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Products List</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-8 row searchBox">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Branch</label>
+                                <div class="col-md-12 col-sm-12 ">
+                                    <select class="form-control" id="BranchforSearch"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Product Name</label>
+                                <div class="col-md-12 col-sm-12 ">
+                                    <input type="text" id="PnameforSearch" class="form-control" placeholder="Enter Product Name">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3" style="padding-top:9px; padding-left:20px;">
+                        <div class="form-group">
+                            <label>Sold Date</label>
+                            <div class="input-group date col-md-12 col-sm-12" id="date" data-target-input="nearest">
+                                <input type="text" id="soldDate" class="form-control datetimepicker-input" data-target="#date" data-toggle="datetimepicker" />
+                                <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                                    <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="cui-ecommerce--catalog">
+                    <div class="row productHolder">
+
+                    </div>
+                </div>
+
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+        <!-- /.card -->
+    </div>
+    <!-- /.col -->
+    <input type="hidden" id="GetProductDetails" value="@Url.Action("GetProductDetails","Product")" />
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Employee")" />
+    <input type="hidden" id="UpdateProductQuantity" value="@Url.Action("UpdateProductQuantity", "Product")" />
+    <input type="hidden" id="SaveProducts" value="@Url.Action("SaveProduct", "Product")" />
+    <input type="hidden" id="DeleteProduct" value="@Url.Action("DeleteProduct", "Product")" />
+
+    <input type="hidden" id="add" value="@ViewBag.Add" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+    <input type="hidden" id="view" value="@ViewBag.View" />
+</div>
+
+
+<script src="~/js/page.productList.js"></script>

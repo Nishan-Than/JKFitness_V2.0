@@ -1,0 +1,25 @@
+﻿.msg-block {
+    font-style: italic;
+    margin: 45px 0;
+    padding: 15px 0;
+    line-height: 30px;
+    text-align: center;
+    background: #f2f2f2;
+    font-size: 30px;
+    color: gray;
+    display: block;
+
+}
+.loading-gif {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 48%;
+    padding: 2px;
+}
+.freeze {
+    pointer-events: none;
+}
+.note-insert {
+    display: none
+}

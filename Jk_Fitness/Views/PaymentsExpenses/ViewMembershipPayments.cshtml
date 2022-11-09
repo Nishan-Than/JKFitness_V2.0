@@ -1,0 +1,123 @@
+﻿
+@{
+    ViewData["Title"] = "ViewMembershipPayments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .modal-dialog.modal-800 {
+        width: 800px;
+        margin: 30px auto;
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">View Membership Payments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Branch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Year</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Year"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Month</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Month"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Member Name</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="MName" class="form-control" placeholder="Member Name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="example1" class="table table-bordered table-striped tblMember">
+                    <thead>
+                        <tr>
+                            <th>Member Id</th>
+                            <th>Name</th>
+                            <th>Package Type</th>
+                            <th>Amount</th>
+                            <th>Payment Date</th>
+                            <th>Payment Status</th>
+                            <th id="Action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership")" />
+    <input type="hidden" id="LoadAllMembershipPayments" value="@Url.Action("LoadAllMembershipPayments", "PaymentsExpenses")" />
+    <input type="hidden" id="DeletePartialPaymentById" value="@Url.Action("DeletePartialPaymentById", "PaymentsExpenses")" />
+    <input type="hidden" id="DeleteMembershipPaymentById" value="@Url.Action("DeleteMembershipPaymentById", "PaymentsExpenses")" />
+    <input type="hidden" id="GetStartandEndYear" value="@Url.Action("GetStartandEndYear", "PaymentsExpenses")" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+</div>
+<div id="PartialPaymentModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-800">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Partial Payments</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="PaymentId" />
+                            <div class="card-footer table-responsive col-md-12 col-sm-12" id="PartialPayTbl">
+                                <table id="tblPayments" class="table table-bordered table-striped tblPartial">
+                                    <thead>
+                                        <tr>
+                                            <th>Paid Date</th>
+                                            <th>Paid Amount</th>
+                                            <th id="ViewAction"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyPartial">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="waitform" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/page.viewMembershipPayments.js"></script>

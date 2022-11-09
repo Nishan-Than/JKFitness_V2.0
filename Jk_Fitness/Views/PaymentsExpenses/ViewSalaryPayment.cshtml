@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "ViewSalaryPayment";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .modal-dialog.modal-800 {
+        width: 800px;
+        margin: 30px auto;
+    }
+</style>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">View Staff Salary Payments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Employee Id</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <input type="text" id="EmployeeId" class="form-control" placeholder="Employee Id">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Month</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Month"></select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="example1" class="table table-bordered table-striped tblstaff">
+                    <thead>
+                        <tr>
+                            <th>Employee Id</th>
+                            <th>Name</th>
+                            <th>Branch</th>
+                            <th>Fixed Salary</th>
+                            <th>Total Commission</th>
+                            <th>Total AdvancePayment</th>
+                            <th>Total Paid</th>
+                            <th>Payment Date</th>
+                            <th id="Action"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership")" />
+    <input type="hidden" id="LoadAllStaffPayments" value="@Url.Action("LoadAllStaffPayments", "PaymentsExpenses")" />
+    <input type="hidden" id="DeleteAdvanceSalaryPayment" value="@Url.Action("DeleteAdvanceSalaryPayment", "PaymentsExpenses")" />
+    <input type="hidden" id="DeleteSalaryPayment" value="@Url.Action("DeleteSalaryPayment", "PaymentsExpenses")" />
+    <input type="hidden" id="GetStartandEndYear" value="@Url.Action("GetStartandEndYear", "PaymentsExpenses")" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+</div>
+
+
+<div id="AdvancePaymentModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-800">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Advance Payments</strong></h4>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="PaymentId" />
+                            <div class="card-footer table-responsive col-md-12 col-sm-12" id="PartialPayTbl">
+                                <table id="tblPayments" class="table table-bordered table-striped tblAdvance">
+                                    <thead>
+                                        <tr>
+                                            <th>Paid Date</th>
+                                            <th>Advance Amount</th>
+                                            <th id="ViewAction"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tbodyAdvance">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div id="waitform" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/page.viewsalary-payment.js"></script>

@@ -1,0 +1,130 @@
+﻿
+@{
+    ViewData["Title"] = "GymAccounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">View Membership Payments</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Branch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Year</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="Year"></select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <div>
+                    <h2><u id="headmembershipPayment"></u></h2>
+                    <br />
+                    <table id="membershipPayment" class="table table-bordered table-striped tblmembershipPayment">
+                        <thead id="theadmembershipPayment" />
+                        <tbody id="tbodymembershipPayment" />
+                    </table>
+                    <div class="msg-block" id="noRecordsmembershipPayment">
+                        <label>No Payments done for the selected year.</label>
+                    </div>
+                    <h5><label id="totalmembershipPayment" style="color:green" /></h5>
+                </div>
+                <br />
+                <div>
+                    <h2><u id="headshopSalesIncome"></u></h2>
+                    <br />
+                    <table id="shopSalesIncome" class="table table-bordered table-striped tblshopSalesIncome">
+                        <thead id="theadshopSalesIncome" />
+                        <tbody id="tbodyshopSalesIncome" />
+                    </table>
+                    <div class="msg-block" id="noRecordsshopSalesIncome">
+                        <label>No Payments done for the selected year.</label>
+                    </div>
+                    <h5><label id="totalshopSalesIncome" style="color:green" /></h5>
+                </div>
+                <br />
+                <div>
+                    <h2><u id="headpersonalTraining"></u></h2>
+                    <br />
+                    <table id="personalTraining" class="table table-bordered table-striped tblpersonalTraining">
+                        <thead id="theadpersonalTraining" />
+                        <tbody id="tbodypersonalTraining" />
+                    </table>
+                    <div class="msg-block" id="noRecordspersonalTraining">
+                        <label>No Payments done for the selected year.</label>
+                    </div>
+                    <h5><label id="totalpersonalTraining" style="color:green" /></h5>
+                </div>
+                <br />
+                <div>
+                    <h2><u id="headtemperoryMembers"></u></h2>
+                    <br />
+                    <table id="personalTraining" class="table table-bordered table-striped tbltemperoryMembers">
+                        <thead id="theadtemperoryMembers" />
+                        <tbody id="tbodytemperoryMembers" />
+                    </table>
+                    <div class="msg-block" id="noRecordstemperoryMembers">
+                        <label>No Payments done for the selected year.</label>
+                    </div>
+                    <h5><label id="totaltemperoryMembers" style="color:green" /></h5>
+                </div>
+                <br />
+                <div>
+                    <h2><u id="headstaffSalary"></u></h2>
+                    <br />
+                    <table id="staffSalary" class="table table-bordered table-striped tblstaffSalary">
+                        <thead id="theadstaffSalary" />
+                        <tbody id="tbodystaffSalary" />
+                    </table>
+                    <div class="msg-block" id="noRecordsstaffSalary">
+                        <label>No Payments done for the selected year.</label>
+                    </div>
+                    <h5><label id="totalstaffSalary" style="color:darkred" /></h5>
+                </div>
+                <br />
+                <div>
+                    <h2><u id="headinternalExpenses"></u></h2>
+                    <br />
+                    <table id="internalExpenses" class="table table-bordered table-striped tblinternalExpenses">
+                        <thead id="theadinternalExpenses" />
+                        <tbody id="tbodyinternalExpenses" />
+                    </table>
+                    <div class="msg-block" id="noRecordsinternalExpenses">
+                        <label>No Payments done for the selected year.</label>
+                    </div>
+                    <h5><label id="totalinternalExpenses" style="color:darkred" /></h5>
+                </div>
+                <br />
+                <div>
+                    <h2><u id="headsummary">Summary By Year</u></h2>
+                    <br />
+                    <h4>Total <strong style="color:green">INCOME</strong> for the selected year   = <span id="income" style="color:green" /></h4><br />
+                    <h4>Total <strong style="color: darkred">EXPENSE</strong> for the selected year = <span id="expense" style="color: darkred" /></h4><br />
+                    <h4>Total <strong id="lblprofit">PROFIT</strong> for the selected year   = <span id="profitamt" /></h4>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership")" />
+    <input type="hidden" id="GetStartandEndYear" value="@Url.Action("GetStartandEndYear", "PaymentsExpenses")" />
+    <input type="hidden" id="GetGymAccounts" value="@Url.Action("GetGymAccounts", "PaymentsExpenses")" />
+</div>
+<script src="~/js/page.accounts-gym.js"></script>

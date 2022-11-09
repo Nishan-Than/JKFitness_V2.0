@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewData["Title"] = "ProvisionalMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*Initially Table and button loading*@
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">MemberShip Details</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Branch</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="BranchforSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <div class="col-md-12 col-sm-12 ">
+                                <select class="form-control" id="GenderSearch"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Filter details</label>
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="col-md-4 col-sm-4">
+                                    <select class="form-control" id="SearchOptions"></select>
+                                </div>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" id="ValueforSearch" class="form-control" placeholder="Enter search value">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div style="float:right">
+                                <button type="button" id="btnAdd" class="btn btn-success"><i class="fa fa-plus"></i> Add New</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="example1" class="table table-bordered table-striped tblMember">
+                    <thead>
+                        <tr>
+                            <th>NIC/Passport No</th>
+                            <th>Full Name</th>
+                            <th>Gender</th>
+                            <th>Payment</th>
+                            <th>Payment Date</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership")" />
+    <input type="hidden" id="SaveProvisionalMember" value="@Url.Action("SaveProvisionalMember", "Membership")" />
+    <input type="hidden" id="GetProvisionalMemberDetails" value="@Url.Action("GetProvisionalMemberDetails", "Membership")" />
+    <input type="hidden" id="UpdateProvisionalMember" value="@Url.Action("UpdateProvisionalMember", "Membership")" />
+    <input type="hidden" id="DeleteProvisionalMember" value="@Url.Action("DeleteProvisionalMember", "Membership")" />
+    <input type="hidden" id="SearchProvisionalMember" value="@Url.Action("SearchProvisionalMember", "Membership")" />
+    <input type="hidden" id="add" value="@ViewBag.Add" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+
+</div>
+
+<div id="MemModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Provisional Member Details</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form id="formUser" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="Id" />
+                            <input type="hidden" value="0" id="CreatedBy" />
+                            <input type="hidden" value="0" id="CreatedDate" />
+                            <div class="form-group row">
+                                <div class="col-md-2 col-sm-2">
+                                    <div class="custom-control custom-checkbox">
+                                        <input class="custom-control-input" type="checkbox" id="Nic" value="true">
+                                        <label for="Nic" class="custom-control-label">NIC</label>
+                                    </div>
+                                </div>
+                                <label class="control-label col-md-2 col-sm-2">NIC/Passport No</label>
+                                <div class="col-md-4 col-sm-4">
+                                    <input type="text" class="form-control" id="NICPaasportNo">
+                                    <span id="ValidNic" class="error" style="color: red;display:none">
+                                        Please Enter Valid NIC number
+                                    </span>
+                                </div>
+                                <div class="col-md-2 col-sm-2">
+                                    <button type="button" id="btnSearch" class="btn btn-success form-control"><i class="fa fa-search"></i> Find</button>
+                                </div>
+                                <div class="col-md-2 col-sm-2">
+                                    <button type="button" id="btnClear" class="btn btn-warning form-control">Clear</button>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Full Name</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" required id="fullName" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-3 ">Date of birth</label>
+                                <div class="input-group date col-md-9 col-sm-9" id="fromdate" data-target-input="nearest">
+                                    <input type="text" id="DOB" class="form-control datetimepicker-input" data-target="#fromdate" data-toggle="datetimepicker" />
+                                    <div class="input-group-append" data-target="#fromdate" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Gender</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <select class="form-control" id="Gender"></select>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Age</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <input type="text" id="Age" class="form-control" placeholder="Age">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-3 ">Branch</label>
+                                <div class="col-md-9 col-sm-9 ">
+                                    <select class="form-control" id="Branch"></select>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Contact No</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" required id="ContactNo" class="form-control" placeholder="771234567">
+                                    <span id="ContactAlert" class="error" style="color: red;display:none">
+                                        Please enter a vaild Phone No
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Email</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" required id="Email" class="form-control">
+                                    <span id="EmailAlert" class="error" style="color: red;display:none">
+                                        Please enter a vaild Email Address
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">House No/Name</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" required id="HouseNo" class="form-control" placeholder="House No/Name">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Street</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" id="Street" class="form-control" placeholder="Street">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3">District</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" required id="District" class="form-control" placeholder="District">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Province</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" id="Province" class="form-control" placeholder="Province">
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Payment</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <input type="text" id="Payment" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="control-label col-md-3 col-sm-3 ">Payment Date</label>
+                                <div class="input-group date col-md-9 col-sm-9" id="paymentdate" data-target-input="nearest">
+                                    <input type="text" id="Pdate" class="form-control datetimepicker-input" data-target="#paymentdate" data-toggle="datetimepicker" />
+                                    <div class="input-group-append" data-target="#paymentdate" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div style="float:right">
+                                    <button type="button" id="btnSave" class="btn btn-success">Save</button>
+                                    <button type="button" id="btnCancel" onclick="Cancel()" class="btn btn-warning">Cancel</button>
+                                </div>
+                            </div>
+                            <div id="waitform" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/page.provisional-Member.js"></script>

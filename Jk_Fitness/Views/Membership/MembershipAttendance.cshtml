@@ -1,0 +1,170 @@
+﻿
+@{ ViewData["Title"] = "MembershipAttendance";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+<style>
+    .searchBox {
+        background-color: lightgrey;
+        border: 5px solid #28a745;
+        padding: 10px;
+    }
+    </style>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">Members Attendance</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-7 row searchBox">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Branch</label>
+                                <div class="col-md-12 col-sm-12 ">
+                                    <select class="form-control" id="Branch"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Date</label>
+                                <div class="input-group date col-md-12 col-sm-12" id="date" data-target-input="nearest">
+                                    <input type="text" id="AttendDate" class="form-control datetimepicker-input" data-target="#date" data-toggle="datetimepicker" />
+                                    <div class="input-group-append" data-target="#date" data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3" style="padding-top:30px">
+                            <div class="form-group">
+                                <button type="button" id="btnSearch" class="btn btn-secondary col-md-12 col-sm-12"><i class="fa fa-search"></i> Search</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div></div>                            
+                    <div class="col-md-5" style="padding-top:30px; padding-left:20px;">
+                        <div class="form-group">
+                            <label>Filter details</label>
+                            <div class="row col-md-12 col-sm-12">
+                                <div class="col-md-5 col-sm-5">
+                                    <select class="form-control" id="SearchOptions"></select>
+                                </div>
+                                <div class="col-md-7 col-sm-7">
+                                    <input type="text" id="ValueforSearch" class="form-control" placeholder="Enter search value">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="example1" class="table table-bordered table-striped tblMember">
+                    <thead>
+                        <tr>
+                            <th>MemberShip Id</th>
+                            <th>Name</th>
+                            <th>Status</th>
+                            <th>Morning Time</th>
+                            <th>Evening Time</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyid">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecords">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Employee")" />
+    <input type="hidden" id="SaveMembersAttendance" value="@Url.Action("SaveMemberAttendance", "Membership")" />
+    <input type="hidden" id="UpdateMemberAttendance" value="@Url.Action("UpdateMemberAttendance", "Membership")" />
+    <input type="hidden" id="GetMemberShipAttendanceDetails" value="@Url.Action("GetMemberShipAttendanceDetails", "Membership")" />
+    <input type="hidden" id="DeleteMemberAttendance" value="@Url.Action("DeleteMemberAttendance", "Membership")" />
+    <input type="hidden" id="LoadMemberShipAttendanceDetails" value="@Url.Action("LoadMemberShipAttendanceDetails", "Membership")" />
+    <input type="hidden" id="edit" value="@ViewBag.Edit" />
+    <input type="hidden" id="delete" value="@ViewBag.Delete" />
+
+</div>
+
+<div id="AttendanceModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel"><strong>Attendance Time</strong></h4>
+                <button type="button" class="close" data-dismiss="modal" onclick="Cancel()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="x_panel">
+                    <div class="x_content">
+                        <form id="Attendance" class="form-horizontal form-label-left" enctype="multipart/form-data">
+                            <input type="hidden" value="0" id="MemberId" />
+                            <input type="hidden" value="0" id="AttendanceId" />
+                            <div class="bootstrap-timepicker">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-3">Morning Start Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker" data-target-input="nearest">
+                                        <input type="text" id="MorningIn" class="form-control datetimepicker-input" data-target="#timepicker" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <label class="control-label col-md-3 col-sm-3">Morning End Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker1" data-target-input="nearest">
+                                        <input type="text" id="MorningOut" class="form-control datetimepicker-input" data-target="#timepicker1" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker1" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bootstrap-timepicker">
+                                <div class="form-group row">
+                                    <label class="control-label col-md-3 col-sm-3">Evening Start Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker2" data-target-input="nearest">
+                                        <input type="text" id="EveningIn" class="form-control datetimepicker-input" data-target="#timepicker2" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker2" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+
+                                    <label class="control-label col-md-3 col-sm-3" @*style="text-align:center"*@>Evening End Time</label>
+
+                                    <div class="input-group date col-md-3 col-sm-3" id="timepicker3" data-target-input="nearest">
+                                        <input type="text" id="EveningOut" class="form-control datetimepicker-input" data-target="#timepicker3" data-toggle="datetimepicker" />
+                                        <div class="input-group-append" data-target="#timepicker3" data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="far fa-clock"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ln_solid"></div>
+                            <div class="form-group">
+                                <div style="float:right">
+                                    <button type="button" id="btnAddMemberAttendance" class="btn btn-success">Save</button>
+                                    <button type="button" onclick="Cancel()" class="btn btn-warning">Cancel</button>
+                                </div>
+                            </div>
+                            <div id="waitform" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/page.membersAttendance.js"></script>
+
