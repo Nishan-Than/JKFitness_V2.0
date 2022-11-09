@@ -1,6 +1,7 @@
 ﻿using DataLayer;
 using DataLayer.Models;
 using ServiceLayer.Email;
+using ServiceLayer.Password;
 using ServiceLayer.VMmodel;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,8 @@ namespace ServiceLayer
         {
             try
             {
+                PasswordGenerate password = new();
+                var MemPwd = password.Generate();
                 var MemId = uow.DbContext.MemberShips.Where(x => x.Branch == Member.Branch.Trim()).OrderBy(x => x.MemberId).Select(x => x.MemberId).LastOrDefault();
                 var PackageDetails = uow.MembershipTypesRepository.GetByID(Member.MemberPackage);
                 var BranchDetail = uow.DbContext.Branches.Where(x => x.BranchCode == Member.Branch.Trim() && x.IsCurrent == true).FirstOrDefault();
@@ -54,6 +57,8 @@ namespace ServiceLayer
                     Member.PackageExpirationDate = Member.JoinDate.Date;
                 }
                 Member.MembershipExpirationDate = Member.PackageExpirationDate.AddMonths(1).Date;
+                Member.Password= Crypto.Hash(MemPwd);
+                Member.IsFirstTime = true;
                 uow.MembershipRepository.Insert(Member);
                 uow.Save();
 
@@ -79,6 +84,26 @@ namespace ServiceLayer
 
                 request.Body = body.ToString();
                 mailService.SendEmailAsync(request);
+
+                #region Send password to Member's MailId
+
+                var PwdMail = new MailRequest();
+                PwdMail.ToEmail = Member.Email;
+                PwdMail.Subject = "New Office Account";
+
+                StringBuilder Pwdbody = new StringBuilder();
+
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Member.FirstName + ",</p>");
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You can now login at JK Fitness Backoffice web application.</p>");
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Member.Email + "</p>");
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Password: " + MemPwd + "</p>");
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Regards,<br /> JK Fitness group </ p > ");
+
+                PwdMail.Body = Pwdbody.ToString();
+                mailService.SendEmailAsync(PwdMail);
+                #endregion
+
                 webResponce = new WebResponce()
                 {
                     Code = 1,

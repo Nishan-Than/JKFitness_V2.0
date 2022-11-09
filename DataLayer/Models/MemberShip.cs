@@ -64,6 +64,8 @@ namespace DataLayer.Models
         public DateTime MembershipExpirationDate { get; set; }
         public bool NoNic { get; set; }
         public bool IsNewPartialPay { get; set; }
+        public bool IsFirstTime { get; set; }
+        public string Password { get; set; }
     }
 
 }
