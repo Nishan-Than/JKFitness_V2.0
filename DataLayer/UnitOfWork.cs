@@ -31,6 +31,7 @@ namespace DataLayer
         private GenericRepository<SoldProducts> soldproductsRepository;
         private GenericRepository<PersonalTraining> personalTrainingRepository;
         private GenericRepository<ProvisionalMember> provisionalMemberRepository;
+        private GenericRepository<RequestTrainers> requestTrainersRepository;
         public GenericRepository<Branch> BranchRepository
         {
             get 
@@ -362,6 +363,26 @@ namespace DataLayer
                 }
             }
         }
+        public GenericRepository<RequestTrainers> RequestTrainersRepository
+        {
+            get
+            {
+                try
+                {
+                    if (this.requestTrainersRepository == null)
+                    {
+                        this.requestTrainersRepository = new GenericRepository<RequestTrainers>(context);
+                    }
+                    return requestTrainersRepository;
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    throw;
+                }
+            }
+        }
+
         public void Save()
         {
             context.SaveChanges();

@@ -35,6 +35,7 @@ namespace DataLayer
         public bool IsFirstTime { get; set; }
         public string Password { get; set; }
         public decimal Salary { get; set; }
+        public bool IsTrainer { get; set; }
 
     }
 }

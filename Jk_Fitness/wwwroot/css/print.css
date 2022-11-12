@@ -1,0 +1,15 @@
+﻿@media print {
+    .noPrint {
+        display: none;
+    }
+    .headPrint {
+        font-size: 3.1rem;
+    }
+}
+
+@media screen {
+    .headPrint {
+        display: none;        
+    }
+}
+

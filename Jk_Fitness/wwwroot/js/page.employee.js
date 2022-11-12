@@ -226,7 +226,9 @@ $('#btnAddEmployee').click(function () {
         MorningOutTime: $('#MorningOut').val(),
         EveningInTime: $('#EveningIn').val(),
         EveningOutTime: $('#EveningOut').val(),
-        Active: $('#Status').prop('checked') ? "true" : "false"
+        Active: $('#Status').prop('checked') ? "true" : "false",
+        IsTrainer: $('#isTrainer').prop('checked') ? "true" : "false"
+
     };
     formData.append("Employee", JSON.stringify(Emp));
 
@@ -374,7 +376,8 @@ function ViewEmployee(Id) {
         $("#MorningOut").val(Result['morningOutTime']);
         $("#EveningIn").val(Result['eveningInTime']);
         $("#EveningOut").val(Result['eveningOutTime']);
-        $("#Status").prop("checked", Result.active)
+        $("#Status").prop("checked", Result.active);
+        $("#isTrainer").prop("checked", Result.isTrainer);
         $("#EmployeeId").val(Result['employeeId']);
         if (Result.image != null) {
             $('#targetImg').attr("src", "data:image/jgp;base64," + Result.image + "");
@@ -432,7 +435,8 @@ function EditEmployee(Id) {
         $("#MorningOut").val(Result['morningOutTime']);
         $("#EveningIn").val(Result['eveningInTime']);
         $("#EveningOut").val(Result['eveningOutTime']);
-        $("#Status").prop("checked", Result.active)
+        $("#Status").prop("checked", Result.active);
+        $("#isTrainer").prop("checked", Result.isTrainer);
         $("#EmployeeId").val(Result['employeeId']);
         if (Result.image != null) {
             $('#targetImg').attr("src", "data:image/jgp;base64," + Result.image + "");
@@ -625,6 +629,7 @@ function Clear() {
     $('#EveningIn').val('12:00 PM');
     $('#EveningOut').val('11:59 PM');
     $('#Status').prop('checked', true);
+    $("#isTrainer").prop("checked", false);
     $('#targetImg').attr("src", "dist/img/default.jpg");
     $('#MebershipNo').val('')
 }
@@ -635,6 +640,7 @@ function Cancel() {
     $('#formUser').trigger("reset");
     $('#imageBrowes').next('.custom-file-label').html("Choose File....");
     $('#Status').prop('checked', true);
+    $("#isTrainer").prop("checked", false);
     $('#targetImg').attr("src", "dist/img/default.jpg");
     $('#EmployeeId').val('');
     $("#ContactAlert").css("display", "none");

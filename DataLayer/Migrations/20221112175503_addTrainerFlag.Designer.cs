@@ -4,14 +4,16 @@ using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DataLayer.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20221112175503_addTrainerFlag")]
+    partial class addTrainerFlag
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -778,44 +780,6 @@ namespace DataLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ProvisionalMembers");
-                });
-
-            modelBuilder.Entity("DataLayer.Models.RequestTrainers", b =>
-                {
-                    b.Property<string>("RequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmployeeId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("MemberId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("ModifiedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("RequestStatus")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("TrainingDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TrainingTimeSlot")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("RequestId");
-
-                    b.ToTable("RequestTrainers");
                 });
 
             modelBuilder.Entity("DataLayer.Models.SalaryPaymentStaff", b =>

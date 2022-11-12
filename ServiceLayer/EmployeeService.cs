@@ -273,6 +273,7 @@ namespace ServiceLayer
                     Empl.Branch = employee.Branch.Trim();
                     Empl.UserType = employee.UserType.Trim();
                     Empl.Active = employee.Active;
+                    Empl.IsTrainer = employee.IsTrainer;
                     Empl.MorningInTime = employee.MorningInTime;
                     Empl.MorningOutTime = employee.MorningOutTime;
                     Empl.EveningInTime = employee.EveningInTime;
