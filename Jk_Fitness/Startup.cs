@@ -85,7 +85,7 @@ namespace Jk_Fitness
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Login}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=Initial}/{id?}");
             });
         }
     }

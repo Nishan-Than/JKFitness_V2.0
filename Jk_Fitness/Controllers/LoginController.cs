@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using ServiceLayer.Password;
 using System.Text;
+using DataLayer.Models;
 
 namespace Jk_Fitness.Controllers
 {
@@ -116,6 +117,83 @@ namespace Jk_Fitness.Controllers
                 };
                 return webResponce;
             }
+        }
+        #endregion
+
+        #region Members Login
+        public IActionResult MemberLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult<WebResponce> ValidateMemberLogIn([FromBody] MemberShip member)
+        {
+            webResponce = logInService.MemberLogInInfo(member);
+            if (webResponce.Code == 1)
+            {
+                //Response.Cookies.Append("jkfitness.cookie", Crypto.EncryptString(((Employee)webResponce.Data).EmployeeId));
+                //Response.Cookies.Append("Role", ((Employee)webResponce.Data).UserType);
+            }
+            return webResponce;
+        }
+        [HttpPost]
+        public ActionResult<WebResponce> MemberConfirmPassword([FromBody] MemberShip member)
+        {
+            webResponce = logInService.ConfirmMemberPassword(member);
+            return webResponce;
+        }
+        [HttpPost]
+        public ActionResult<WebResponce> UpdateMemberPassword([FromBody] MemberShip member)
+        {
+            try
+            {
+                webResponce = logInService.UpdatePassword(member);
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
+        #endregion
+
+        #region MemberForgotPassword
+        public IActionResult MemberForgotPassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult<WebResponce> MemberRequestPassword([FromBody] MemberShip member)
+        {
+            try
+            {
+                webResponce = logInService.RequestNewPassword(member);
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
+        #endregion
+
+        #region initial page
+        public IActionResult Initial()
+        {
+            return View();
         }
         #endregion
     }

@@ -1,4 +1,5 @@
 ﻿using DataLayer;
+using DataLayer.Models;
 using ServiceLayer.Email;
 using ServiceLayer.Password;
 using System;
@@ -200,10 +201,10 @@ namespace ServiceLayer
 
                         StringBuilder body = new StringBuilder();
 
-                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + employee.FirstName + ",</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Empl.FirstName + ",</p>");
                         body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>We Successufully Reset Your Password.</p>");
                         body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
-                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + employee.Email + "</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Empl.Email + "</p>");
                         body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>New Password: " + EmpPwd + "</p>");
                         body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Regards,<br /> JK Fitness group </ p > ");
 
@@ -215,6 +216,216 @@ namespace ServiceLayer
                             Code = 1,
                             Message = "Success",
                             Data= Empl
+                        };
+                    }
+                    else
+                    {
+                        webResponce = new WebResponce()
+                        {
+                            Code = 0,
+                            Message = "Not Active Employee"
+                        };
+                    }
+
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "UserName Doesn't Exit"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
+        public WebResponce MemberLogInInfo(MemberShip member)
+        {
+            try
+            {
+                var Mem = uow.DbContext.MemberShips.Where(x => x.Email == member.Email.Trim()).FirstOrDefault();
+                if (Mem != null)
+                {
+                    if (Mem.Active)
+                    {
+                        if (string.Compare(Crypto.Hash(member.Password.Trim()), Mem.Password) == 0)
+                        {
+                            webResponce = new WebResponce()
+                            {
+                                Code = 1,
+                                Message = "Success",
+                                Data = Mem
+                            };
+                        }
+                        else
+                        {
+                            webResponce = new WebResponce()
+                            {
+                                Code = 0,
+                                Message = "Incorrect Password",
+                            };
+                        }
+
+                    }
+                    else
+                    {
+                        webResponce = new WebResponce()
+                        {
+                            Code = 0,
+                            Message = "Not Active Employee"
+                        };
+                    }
+
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "UserName Doesn't Exit"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+        public WebResponce ConfirmMemberPassword(MemberShip member)
+        {
+            try
+            {
+                var Mem = uow.DbContext.MemberShips.Where(x => x.MemberId == member.MemberId).FirstOrDefault();
+                if (Mem != null)
+                {
+                    if (string.Compare(Crypto.Hash(member.Password.Trim()), Mem.Password) == 0)
+                    {
+                        webResponce = new WebResponce()
+                        {
+                            Code = 1,
+                            Message = "Success"
+                        };
+                    }
+                    else
+                    {
+                        webResponce = new WebResponce()
+                        {
+                            Code = 0,
+                            Message = "Invalid",
+                        };
+                    }
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Invalid"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+        public WebResponce UpdatePassword(MemberShip member)
+        {
+            try
+            {
+                var Mem = uow.DbContext.MemberShips.Where(x => x.MemberId == member.MemberId).FirstOrDefault();
+                if (Mem != null)
+                {
+                    Mem.Password = Crypto.Hash(member.Password.Trim());
+                    Mem.IsFirstTime = false;
+                    Mem.ModifiedDate = GetDateTimeByLocalZone.GetDateTime();
+                    
+                    uow.MembershipRepository.Update(Mem);
+                    uow.Save();
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success"
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Invalid"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
+        public WebResponce RequestNewPassword(MemberShip member)
+        {
+            try
+            {
+                var Mem = uow.DbContext.MemberShips.Where(x => x.Email == member.Email.Trim()).FirstOrDefault();
+                if (Mem != null)
+                {
+                    if (Mem.Active)
+                    {
+                        PasswordGenerate password = new();
+                        var MemPwd = password.Generate();
+
+                        Mem.Password = Crypto.Hash(MemPwd);
+                        Mem.IsFirstTime = true;
+                        Mem.ModifiedDate = GetDateTimeByLocalZone.GetDateTime();
+                        uow.MembershipRepository.Update(Mem);
+                        uow.Save();
+
+                        var request = new MailRequest();
+                        request.ToEmail = member.Email;
+                        request.Subject = "Request New Password";
+
+                        StringBuilder body = new StringBuilder();
+
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Mem.FirstName + ",</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>We Successufully Reset Your Password.</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Mem.Email + "</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>New Password: " + MemPwd + "</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Regards,<br /> JK Fitness group </ p > ");
+
+                        request.Body = body.ToString();
+                        mailService.SendEmailAsync(request);
+
+                        webResponce = new WebResponce()
+                        {
+                            Code = 1,
+                            Message = "Success",
+                            Data = Mem
                         };
                     }
                     else
