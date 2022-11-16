@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataLayer.Migrations
 {
-    public partial class RequestTrainingModel : Migration
+    public partial class RequestTrainer : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -11,9 +11,10 @@ namespace DataLayer.Migrations
                 name: "RequestTrainers",
                 columns: table => new
                 {
-                    RequestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RequestId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     EmployeeId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    MemberId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MemberId = table.Column<int>(type: "int", nullable: false),
                     TrainingDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     TrainingTimeSlot = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RequestStatus = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -12,9 +12,9 @@ namespace DataLayer.Models
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public string RequestId { get; set; }
+        public int RequestId { get; set; }
         public string EmployeeId { get; set; }
-        public string MemberId { get; set; }
+        public int MemberId { get; set; }
         public DateTime TrainingDate { get; set; }
         public string TrainingTimeSlot { get; set; }
         public string RequestStatus { get; set; }

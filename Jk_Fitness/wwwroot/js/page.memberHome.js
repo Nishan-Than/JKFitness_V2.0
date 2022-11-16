@@ -1,0 +1,242 @@
+﻿$(document).ready(function () {
+    LoadTrainers();
+    var CurDate = new Date();
+    $("#Date").val(getFormattedDate(CurDate));
+    var EmployeeId;
+    LoadMonths();
+});
+
+$(function () {
+    //Date picker
+    $('#Tdate').datetimepicker({
+        format: 'L'
+    });
+    $('#Hdate').datetimepicker({
+        format: 'L'
+    });
+});
+
+function LoadTrainers() {
+    $('#Trainer').find('option').remove().end();
+    Trainer = $('#Trainer');
+
+    $.ajax({
+        type: 'GET',
+        url: $("#GetTrainers").val(),
+        dataType: 'json',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+               
+                Trainer.append($("<option/>").val(0).text("-Select Trainer-"));
+                $.each(Result, function () {
+                    Trainer.append($("<option/>").val(this.employeeId).text(this.firstName));
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+        }
+    });
+}
+
+$("#Trainer").change(function () {
+    var memId = JSON.parse(window.localStorage.getItem('Mem')).Id;
+    empId = $('#Trainer').val();
+    date = $('#Date').val();
+    EmployeeId = $('#Trainer').val();
+
+    var data = new FormData();
+    data.append("EmployeeId", $('#Trainer').val());
+    data.append("Date", $('#Date').val());
+    data.append("MemberId", memId);
+
+    $.ajax({
+        type: 'POST',
+        url: $("#NewTrainingRequest").val(),
+        dataType: 'json',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            $("#waitform").css("display", "none");
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+                var tr = [];
+                for (var i = 0; i < Result.length; i++) {
+                    tr.push('<tr>');
+                    tr.push("<td>" + Result[i].timeSlot + "</td>");
+                    if (Result[i].status == "Available")
+                        tr.push("<td><button onclick=\"NewTrainingRequest('" + Result[i].timeSlot + "')\" class=\"btn btn-primary\"> Request </button></td>");
+                    else
+                        tr.push("<td>" + Result[i].status + "</td>");
+                   
+                    tr.push('</tr>');
+                }
+
+                $("#tbodyid1").empty();
+                $('.tblNewTraining').append($(tr.join('')));
+                $("#noRecords1").css("display", "none");
+                $("#tblNewTraining").css("display", "table");
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            }
+
+        },
+        error: function (jqXHR, exception) {
+
+        }
+    });
+});
+
+function getFormattedDate(date) {
+    var year = date.getFullYear();
+
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+
+    return month + '/' + day + '/' + year;
+}
+
+function NewTrainingRequest(TimeSlot) {
+    var memId = JSON.parse(window.localStorage.getItem('Mem')).Id;
+    var date = $('#Date').val();
+    var EmpId = EmployeeId;
+
+    var data = new FormData();
+    data.append("EmployeeId", EmpId);
+    data.append("MemberId", memId);
+    data.append("TrainingDate", date);
+    data.append("TrainingTimeSlot", TimeSlot);
+
+    $.ajax({
+        type: 'POST',
+        url: $("#SaveNewTrainingRequest").val(),
+        dataType: 'json',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+           
+            if (myData.code == "1") {
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+               
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+              
+            }
+        },
+        error: function (jqXHR, exception) {
+        }
+    });
+
+};
+
+function LoadMonths() {
+    let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    var month_selected = (new Date).getMonth(); // current month
+    var option = '';
+
+    for (let i = 0; i < months.length; i++) {
+        let month_number = (i + 1);
+
+        // value month number with 0. [01 02 03 04..]
+        //let month = (month_number <= 9) ? '0' + month_number : month_number;
+
+        // or value month number. [1 2 3 4..]
+        let month = month_number;
+
+        // or value month names. [January February]
+        // let month = months[i];
+
+        let selected = (i === month_selected ? ' selected' : '');
+        option += '<option value="' + month + '"' + selected + '>' + months[i] + '</option>';
+    }
+    document.getElementById("Month").innerHTML = option;
+    LoadTrainingHistroy($('#Month').val());
+}
+
+function LoadTrainingHistroy(Month) {
+    var memId = JSON.parse(window.localStorage.getItem('Mem')).Id;
+
+    var data = new FormData();
+    data.append("Month", Month);
+    data.append("MemberId", memId);
+
+    $.ajax({
+        type: 'POST',
+        url: $("#TrainingHistroy").val(),
+        dataType: 'json',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            $("#waitform").css("display", "none");
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+                var tr = [];
+                for (var i = 0; i < Result.length; i++) {
+                    tr.push('<tr>');
+                    tr.push("<td>" + getFormattedDate(new Date(Result[i].date)) + "</td>");
+                    tr.push("<td>" + Result[i].timeSlot + "</td>");
+                    tr.push("<td>" + Result[i].trainer + "</td>");
+                    tr.push("<td>" + Result[i].status + "</td>");
+                   
+                    tr.push('</tr>');
+                }
+
+                $("#tbodyid").empty();
+                $('.tblTrainingHistroy').append($(tr.join('')));
+                $("#noRecords2").css("display", "none");
+                $("#tblTrainingHistroy").css("display", "table");
+
+            } else {
+                $("#noRecords2").css("display", "block");
+                $("#tblTrainingHistroy").css("display", "none");
+
+                var tr = [];
+                $("#tbodyid").empty();
+                $('.tblTrainingHistroy').append($(tr.join('')));
+            }
+
+        },
+        error: function (jqXHR, exception) {
+
+        }
+    });
+}
+
+$("#Month").change(function () {
+    LoadTrainingHistroy($('#Month').val());
+});
