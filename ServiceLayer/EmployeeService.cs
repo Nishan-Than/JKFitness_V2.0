@@ -686,5 +686,97 @@ namespace ServiceLayer
 
         #endregion
 
+        #region Employee Traning
+        public WebResponce EmployeeTrainingRequest(TrainingVM trainers)
+        {
+            try
+            {
+                var TrainingRequest = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == trainers.EmployeeId && x.TrainingDate == trainers.Date).ToList();
+                if (TrainingRequest.Count != 0)
+                {
+                    List<TrainingVM> TrainingList = new List<TrainingVM>();
+                    foreach (var item in TrainingRequest)
+                    {
+                        var REtraning = new TrainingVM();
+                        REtraning.MemberId = item.MemberId;
+                        REtraning.TimeSlot = item.TrainingTimeSlot;
+                        REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                        REtraning.Status = item.RequestStatus;
+                        TrainingList.Add(REtraning);
+                    }
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success",
+                        Data = TrainingList
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Seems Like Doesn't have Records!"
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
+        public WebResponce EmployeeTrainingHistroy(TrainingVM trainers)
+        {
+            try
+            {
+                var TrainingRequest = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == trainers.EmployeeId && x.TrainingDate.Month == trainers.Month).ToList();
+                if (TrainingRequest.Count != 0)
+                {
+                    List<TrainingVM> TrainingList = new List<TrainingVM>();
+                    foreach (var item in TrainingRequest)
+                    {
+                        var REtraning = new TrainingVM();
+                        REtraning.MemberId = item.MemberId;
+                        REtraning.TimeSlot = item.TrainingTimeSlot;
+                        REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                        REtraning.Status = item.RequestStatus;
+                        TrainingList.Add(REtraning);
+                    }
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success",
+                        Data = TrainingList
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Seems Like Doesn't have Records!"
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+        #endregion
+
     }
 }
