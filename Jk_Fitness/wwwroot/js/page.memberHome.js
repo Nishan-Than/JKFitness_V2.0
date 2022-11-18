@@ -50,7 +50,7 @@ function LoadTrainers() {
     });
 }
 
-$("#Trainer").change(function () {
+function LoadTrainerTimeSlot() {
     var memId = JSON.parse(window.localStorage.getItem('Mem')).Id;
     empId = $('#Trainer').val();
     date = $('#Date').val();
@@ -103,6 +103,20 @@ $("#Trainer").change(function () {
 
         }
     });
+}
+
+$('#btnSearch').click(function () {
+    var EmployeeId = $('#Trainer').val();
+    if (EmployeeId != "0") {
+        LoadTrainerTimeSlot();
+    } else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Please Select the Trainer!',
+        });
+    }
+   
 });
 
 function getFormattedDate(date) {
@@ -127,7 +141,7 @@ function NewTrainingRequest(TimeSlot) {
     data.append("MemberId", memId);
     data.append("TrainingDate", date);
     data.append("TrainingTimeSlot", TimeSlot);
-
+    $("#wait").css("display", "block");
     $.ajax({
         type: 'POST',
         url: $("#SaveNewTrainingRequest").val(),
@@ -137,7 +151,7 @@ function NewTrainingRequest(TimeSlot) {
         contentType: false,
         success: function (response) {
             var myData = jQuery.parseJSON(JSON.stringify(response));
-           
+            $("#wait").css("display", "none");
             if (myData.code == "1") {
                 Swal.fire({
                     position: 'center',
@@ -146,7 +160,8 @@ function NewTrainingRequest(TimeSlot) {
                     showConfirmButton: false,
                     timer: 1500
                 });
-               
+                LoadTrainerTimeSlot();
+                LoadTrainingHistroy($('#Month').val());
             } else {
                 Swal.fire({
                     icon: 'error',

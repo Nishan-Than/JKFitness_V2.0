@@ -69,10 +69,24 @@ function ListNewRequest() {
                 for (var i = 0; i < Result.length; i++) {
                     tr.push('<tr>');
                     tr.push("<td>" + Result[i].timeSlot + "</td>");
-                    tr.push("<td>" + Result[i].memberId + "</td>");
-                    tr.push("<td>" + Result[i].memberName + "</td>");
-                    tr.push("<td>" + Result[i].status + "</td>");
+                    if (Result[i].memberId != 0)
+                        tr.push("<td>" + Result[i].memberId + "</td>");
+                    else
+                        tr.push("<td>" + "-" + "</td>");
 
+                    if (Result[i].memberName != null)
+                        tr.push("<td>" + Result[i].memberName + "</td>");
+                    else
+                        tr.push("<td>" + "-" + "</td>");                  
+
+                    if (Result[i].status == "Pending")
+                        tr.push("<td><button onclick=\"AcceptTrainingRequest('" + Result[i].id + "')\" class=\"btn btn-primary\"> Accept </button> <button onclick=\"RejectTrainingRequest('" + Result[i].id + "')\" class=\"btn btn-danger\"> Reject </button></td>");
+                    else if (Result[i].status == "Accepted")
+                        tr.push("<td><strong style=\"color:green\">Accepted</strong></td>");
+                    else if (Result[i].status == "Declined")
+                        tr.push("<td><strong style=\"color:red\">Declined</strong></td>");
+                    else
+                        tr.push("<td>" + Result[i].status + "</td>");
                     tr.push('</tr>');
                 }
 
@@ -82,11 +96,12 @@ function ListNewRequest() {
                 $("#tblNewRequest").css("display", "table");
 
             } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!',
-                });
+                $("#noRecordspack").css("display", "block");
+                $("#tblNewRequest").css("display", "none");
+
+                var tr = [];
+                $("#tbodyPack").empty();
+                $('.tblNewRequest').append($(tr.join('')));
             }
 
         },
@@ -122,10 +137,19 @@ function ListTrainerHistory(month) {
                 var tr = [];
                 for (var i = 0; i < Result.length; i++) {
                     tr.push('<tr>');
+                    tr.push("<td>" + getFormattedDate(new Date(Result[i].date)) + "</td>");
                     tr.push("<td>" + Result[i].timeSlot + "</td>");
                     tr.push("<td>" + Result[i].memberId + "</td>");
                     tr.push("<td>" + Result[i].memberName + "</td>");
-                    tr.push("<td>" + Result[i].status + "</td>");
+                   
+                    if (Result[i].status == "Accepted")
+                        tr.push("<td><strong style=\"color:green\">Accepted</strong></td>");
+                    else if (Result[i].status == "Declined")
+                        tr.push("<td><strong style=\"color:red\">Declined</strong></td>");
+                    else if (Result[i].status == "Pending")
+                        tr.push("<td><strong style=\"color:orange\">Pending</strong></td>");
+                    else
+                        tr.push("<td>" + Result[i].status + "</td>");
 
                     tr.push('</tr>');
                 }
@@ -135,6 +159,53 @@ function ListTrainerHistory(month) {
                 $("#noRecordsmem").css("display", "none");
                 $("#tblRequestHistroy").css("display", "table");
 
+            } else {
+                $("#noRecordsmem").css("display", "block");
+                $("#tblRequestHistroy").css("display", "none");
+
+                var tr = [];
+                $("#tbodyidMem").empty();
+                $('.tblRequestHistroy').append($(tr.join('')));
+            }
+
+        },
+        error: function (jqXHR, exception) {
+
+        }
+    });
+};
+
+$("#Month").change(function () {
+    ListTrainerHistory($('#Month').val());
+});
+
+function AcceptTrainingRequest(id) {
+
+    var data = new FormData();
+    data.append("Id", id);
+    data.append("Status", "Accepted");
+
+    $.ajax({
+        type: 'POST',
+        url: $("#UpdateRequestTrainerStatus").val(),
+        dataType: 'json',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            $("#waitform").css("display", "none");
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                ListNewRequest();
+                ListTrainerHistory($('#Month').val());
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -148,8 +219,46 @@ function ListTrainerHistory(month) {
 
         }
     });
-};
+}
 
-$("#Month").change(function () {
-    ListTrainerHistory($('#Month').val());
-});
+function RejectTrainingRequest(id) {
+
+    var data = new FormData();
+    data.append("Id", id);
+    data.append("Status", "Declined");
+
+    $.ajax({
+        type: 'POST',
+        url: $("#UpdateRequestTrainerStatus").val(),
+        dataType: 'json',
+        data: data,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            $("#waitform").css("display", "none");
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: 'Your work has been saved',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+                ListNewRequest();
+                ListTrainerHistory($('#Month').val());
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            }
+
+        },
+        error: function (jqXHR, exception) {
+
+        }
+    });
+}

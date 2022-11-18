@@ -47,6 +47,7 @@
                                         <th>Requested Member Id</th>
                                         <th>Requested Member Name</th>
                                         <th>Status</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody id="tbodyPack">
@@ -68,6 +69,7 @@
                             <table id="example1" class="table table-bordered table-striped tblRequestHistroy">
                                 <thead>
                                     <tr>
+                                        <th>Date</th>
                                         <th>Time Slot</th>
                                         <th>Requested Member Id</th>
                                         <th>Requested Member Name</th>
@@ -90,5 +92,6 @@
     </div>
     <input type="hidden" id="NewTrainingRequest" value="@Url.Action("NewTrainingRequest", "Home")" />
     <input type="hidden" id="TrainingRequestHistroy" value="@Url.Action("TrainingRequestHistroy", "Home")" />
+    <input type="hidden" id="UpdateRequestTrainerStatus" value="@Url.Action("UpdateRequestTrainerStatus", "Home")" />
 </div>
 <script src="~/js/page.employeeHome.js"></script>

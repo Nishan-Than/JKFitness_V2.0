@@ -8,6 +8,7 @@ namespace ServiceLayer.VMmodel
 {
     public class TrainingVM
     {
+        public int Id { get; set; }
         public string TimeSlot { get; set; }
         public int MemberId { get; set; }
         public string MemberName { get; set; }

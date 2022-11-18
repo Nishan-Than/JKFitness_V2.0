@@ -80,5 +80,25 @@ namespace Jk_Fitness.Controllers
                 return webResponce;
             }
         }
+
+        [HttpPost]
+        public WebResponce UpdateRequestTrainerStatus(TrainingVM training)
+        {
+            try
+            {
+                training.EmployeeId = Crypto.DecryptString(Request.Cookies["jkfitness.cookie"]);
+                webResponce = employee.UpdateRequestTrainerStatus(training);
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
     }
 }

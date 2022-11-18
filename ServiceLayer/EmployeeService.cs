@@ -533,37 +533,37 @@ namespace ServiceLayer
                         TrainingList.Add(traning);
                         intime++;
                     }
-                         intime = Int32.Parse(Empl.EveningInTime.Split(":")[0]);
-                         outtime = Int32.Parse(Empl.EveningOutTime.Split(":")[0]);
+                    intime = Int32.Parse(Empl.EveningInTime.Split(":")[0]);
+                    outtime = Int32.Parse(Empl.EveningOutTime.Split(":")[0]);
 
-                        while (intime < outtime)
+                    while (intime < outtime)
+                    {
+                        string timeSlot1 = intime + "PM" + " - " + (intime + 1) + "PM";
+                        var traning1 = new TrainingVM();
+                        traning1.TimeSlot = timeSlot1;
+
+                        var ReqTrainer1 = uow.DbContext.RequestTrainers.Where(x => x.MemberId == training.MemberId && x.TrainingTimeSlot == timeSlot1 && x.TrainingDate == training.Date).FirstOrDefault();
+                        if (ReqTrainer1 != null)
                         {
-                            string timeSlot1 = intime + "PM" + " - " + (intime + 1) + "PM";
-                            var traning1 = new TrainingVM();
-                            traning1.TimeSlot = timeSlot1;
-
-                            var ReqTrainer1 = uow.DbContext.RequestTrainers.Where(x => x.MemberId == training.MemberId && x.TrainingTimeSlot == timeSlot1 && x.TrainingDate == training.Date).FirstOrDefault();
+                            traning1.Status = ReqTrainer1.RequestStatus;
+                        }
+                        else
+                        {
+                            ReqTrainer1 = uow.DbContext.RequestTrainers.Where(x => x.TrainingTimeSlot == timeSlot1 && x.TrainingDate == training.Date).FirstOrDefault();
                             if (ReqTrainer1 != null)
                             {
-                                traning1.Status = ReqTrainer1.RequestStatus;
+                                traning1.Status = "Not Available";
                             }
                             else
                             {
-                                ReqTrainer1 = uow.DbContext.RequestTrainers.Where(x => x.TrainingTimeSlot == timeSlot1 && x.TrainingDate == training.Date).FirstOrDefault();
-                                if (ReqTrainer1 != null)
-                                {
-                                    traning1.Status = "Not Available";
-                                }
-                                else
-                                {
-                                    traning1.Status = "Available";
-                                }
-
+                                traning1.Status = "Available";
                             }
 
-                            TrainingList.Add(traning1);
-                            intime++;
                         }
+
+                        TrainingList.Add(traning1);
+                        intime++;
+                    }
 
                     webResponce = new WebResponce()
                     {
@@ -687,23 +687,66 @@ namespace ServiceLayer
         #endregion
 
         #region Employee Traning
-        public WebResponce EmployeeTrainingRequest(TrainingVM trainers)
+        public WebResponce EmployeeTrainingRequest(TrainingVM training)
         {
             try
             {
-                var TrainingRequest = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == trainers.EmployeeId && x.TrainingDate == trainers.Date).ToList();
-                if (TrainingRequest.Count != 0)
+                var Empl = uow.DbContext.Employees.Where(x => x.EmployeeId == training.EmployeeId.Trim()).FirstOrDefault();
+                if (Empl != null)
                 {
                     List<TrainingVM> TrainingList = new List<TrainingVM>();
-                    foreach (var item in TrainingRequest)
+
+                    int intime = Int32.Parse(Empl.MorningInTime.Split(":")[0]);
+                    int outtime = Int32.Parse(Empl.MorningOutTime.Split(":")[0]);
+
+                    while (intime < outtime)
                     {
-                        var REtraning = new TrainingVM();
-                        REtraning.MemberId = item.MemberId;
-                        REtraning.TimeSlot = item.TrainingTimeSlot;
-                        REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName).FirstOrDefault();
-                        REtraning.Status = item.RequestStatus;
-                        TrainingList.Add(REtraning);
+                        string timeSlot = intime + "AM" + " - " + (intime + 1) + "AM";
+                        var traning = new TrainingVM();
+                        traning.TimeSlot = timeSlot;
+
+                        var ReqTrainer = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == training.EmployeeId.Trim() && x.TrainingTimeSlot == timeSlot && x.TrainingDate == training.Date).FirstOrDefault();
+                        if (ReqTrainer != null)
+                        {
+                            traning.Status = ReqTrainer.RequestStatus;
+                            traning.MemberId = ReqTrainer.MemberId;
+                            traning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == ReqTrainer.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                            traning.Id = ReqTrainer.RequestId;
+                        }
+                        else
+                        {
+                            traning.Status = "Available";
+                        }
+
+                        TrainingList.Add(traning);
+                        intime++;
                     }
+                    intime = Int32.Parse(Empl.EveningInTime.Split(":")[0]);
+                    outtime = Int32.Parse(Empl.EveningOutTime.Split(":")[0]);
+
+                    while (intime < outtime)
+                    {
+                        string timeSlot1 = intime + "PM" + " - " + (intime + 1) + "PM";
+                        var traning1 = new TrainingVM();
+                        traning1.TimeSlot = timeSlot1;
+
+                        var ReqTrainer1 = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == training.EmployeeId && x.TrainingTimeSlot == timeSlot1 && x.TrainingDate == training.Date).FirstOrDefault();
+                        if (ReqTrainer1 != null)
+                        {
+                            traning1.Status = ReqTrainer1.RequestStatus;
+                            traning1.MemberId = ReqTrainer1.MemberId;
+                            traning1.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == ReqTrainer1.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                            traning1.Id = ReqTrainer1.RequestId;
+                        }
+                        else
+                        {
+                            traning1.Status = "Available";
+                        }
+
+                        TrainingList.Add(traning1);
+                        intime++;
+                    }
+
                     webResponce = new WebResponce()
                     {
                         Code = 1,
@@ -718,7 +761,7 @@ namespace ServiceLayer
                         Code = 0,
                         Message = "Seems Like Doesn't have Records!"
                     };
-                }
+                } 
 
             }
             catch (Exception ex)
@@ -743,6 +786,7 @@ namespace ServiceLayer
                     foreach (var item in TrainingRequest)
                     {
                         var REtraning = new TrainingVM();
+                        REtraning.Date = item.TrainingDate;
                         REtraning.MemberId = item.MemberId;
                         REtraning.TimeSlot = item.TrainingTimeSlot;
                         REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName).FirstOrDefault();
@@ -776,6 +820,66 @@ namespace ServiceLayer
             }
             return webResponce;
         }
+
+        public WebResponce UpdateRequestTrainerStatus(TrainingVM trainers)
+        {
+            try
+            {
+                var Empl = uow.DbContext.Employees.Where(x => x.EmployeeId == trainers.EmployeeId.Trim()).FirstOrDefault();
+                var ReTrainer = uow.DbContext.RequestTrainers.Where(x => x.RequestId == trainers.Id).FirstOrDefault();
+                if (ReTrainer != null)
+                {
+                    ReTrainer.RequestStatus = trainers.Status;
+                    ReTrainer.ModifiedDate = GetDateTimeByLocalZone.GetDateTime();
+                    ReTrainer.ModifiedBy = trainers.EmployeeId;
+                    uow.RequestTrainersRepository.Update(ReTrainer);
+                    uow.Save();
+
+                    if (ReTrainer.RequestStatus == "Accepted") {
+                        var request = new MailRequest();
+                        request.ToEmail = Empl.Email;
+                        request.Subject = "New Office Account";
+
+                        StringBuilder body = new StringBuilder();
+
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Empl.FirstName + ",</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You can now login at JK Fitness Backoffice web application.</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Empl.Email + "</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Regards,<br /> JK Fitness group </ p > ");
+
+                        request.Body = body.ToString();
+                        mailService.SendEmailAsync(request);
+                    }
+
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success",
+                        Data = ReTrainer
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Seems Like Doesn't have Records!"
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
         #endregion
 
     }
