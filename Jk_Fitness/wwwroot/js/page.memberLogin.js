@@ -34,6 +34,7 @@
                     var Result = myData.data;
                     const Member = {
                         Id: Result.memberId,
+                        Name: Result.firstName + " " + Result.lastName,
                     }
                     window.localStorage.setItem('Mem', JSON.stringify(Member));
                     if (Result.isFirstTime) {

@@ -5,11 +5,19 @@
     .headPrint {
         font-size: 3.1rem;
     }
+    .table-responsive {
+        overflow: hidden;
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+    @page {
+        size: A3 landscape;
+    }
 }
 
 @media screen {
     .headPrint {
         display: none;        
-    }
+    }  
 }
 

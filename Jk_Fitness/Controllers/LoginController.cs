@@ -132,8 +132,7 @@ namespace Jk_Fitness.Controllers
             webResponce = logInService.MemberLogInInfo(member);
             if (webResponce.Code == 1)
             {
-                //Response.Cookies.Append("jkfitness.cookie", Crypto.EncryptString(((Employee)webResponce.Data).EmployeeId));
-                //Response.Cookies.Append("Role", ((Employee)webResponce.Data).UserType);
+                Response.Cookies.Append("jkfitness.member", Crypto.EncryptString(((MemberShip)webResponce.Data).MemberId.ToString()));
             }
             return webResponce;
         }
@@ -184,6 +183,30 @@ namespace Jk_Fitness.Controllers
                 {
                     Code = -1,
                     Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
+
+        [HttpGet]
+        public ActionResult<WebResponce> MemberSignOutLogin()
+        {
+            try
+            {
+                Response.Cookies.Delete("jkfitness.member");
+                webResponce = new WebResponce()
+                {
+                    Code = 1,
+                    Message = "Success"
+                };
+                return webResponce;
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
                 };
                 return webResponce;
             }

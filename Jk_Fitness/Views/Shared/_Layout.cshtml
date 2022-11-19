@@ -96,7 +96,7 @@
                     <div class="dropdown-menu">
                         <a href="@Url.Action("Profile", "Employee")" class="dropdown-item"><i class="fa fa-user-o"></i> Profile</a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" onclick="SignOut()" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                        <a href="/" onclick="SignOut()" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                     </div>
                 </li>
             </ul>
@@ -398,7 +398,7 @@
                 </nav>
                 <!-- /.sidebar-menu -->
                 <input type="hidden" id="SignOutLogin" value="@Url.Action("SignOutLogin","Login")" />
-                <input type="hidden" id="LoginHome" value="@Url.Action("Index","Login")" />
+                <input type="hidden" id="LoginHome" value="@Url.Action("Initial","Login")" />
                 <input type="hidden" id="GetUserRights" value="@Url.Action("GetUserRights","Settings")" />
                 <input type="hidden" id="GetNotificationDetails" value="@Url.Action("GetNotifications", "Notification")" />
             </div>

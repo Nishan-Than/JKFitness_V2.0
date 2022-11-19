@@ -459,11 +459,12 @@ namespace ServiceLayer
         }
 
         #region Training Request and Histroy
-        public WebResponce ListTrainerDetails()
+        public WebResponce ListTrainerDetails(int memberId)
         {
             try
             {
-                List<Employee> employe = uow.DbContext.Employees.Where(x => x.IsTrainer == true).ToList();
+                var member = uow.MembershipRepository.GetByID(memberId);
+                List<Employee> employe = uow.DbContext.Employees.Where(x => x.IsTrainer == true && x.Branch == member.Branch).ToList();
                 if (employe != null && employe.Count > 0)
                 {
                     webResponce = new WebResponce()
@@ -598,6 +599,7 @@ namespace ServiceLayer
             try
             {
                 var Empl = uow.DbContext.Employees.Where(x => x.EmployeeId == requestTrainers.EmployeeId.Trim()).FirstOrDefault();
+                var member = uow.MembershipRepository.GetByID(requestTrainers.MemberId);
 
                 requestTrainers.RequestStatus = "Pending";
                 requestTrainers.CreatedDate = GetDateTimeByLocalZone.GetDateTime();
@@ -608,14 +610,15 @@ namespace ServiceLayer
 
                 var request = new MailRequest();
                 request.ToEmail = Empl.Email;
-                request.Subject = "New Office Account";
+                request.Subject = "New Personal Training Request";
 
                 StringBuilder body = new StringBuilder();
 
                 body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Empl.FirstName + ",</p>");
-                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You can now login at JK Fitness Backoffice web application.</p>");
-                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
-                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Empl.Email + "</p>");
+                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You get a new personal training request from a member of your branch.</p>");
+                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Member: " + member.FirstName + member.LastName + " </p>");
+                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Date: " + requestTrainers.TrainingDate.ToShortDateString() + "</p>");
+                body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Time: " + requestTrainers.TrainingTimeSlot + "</p>");
                 body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Regards,<br /> JK Fitness group </ p > ");
 
                 request.Body = body.ToString();
@@ -652,7 +655,7 @@ namespace ServiceLayer
                         var REtraning = new TrainingVM();
                         REtraning.Date = item.TrainingDate;
                         REtraning.TimeSlot = item.TrainingTimeSlot;
-                        REtraning.Trainer = uow.DbContext.Employees.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.FirstName).FirstOrDefault();
+                        REtraning.Trainer = uow.DbContext.Employees.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
                         REtraning.Status = item.RequestStatus;
                         TrainingList.Add(REtraning);
                     }
@@ -710,7 +713,7 @@ namespace ServiceLayer
                         {
                             traning.Status = ReqTrainer.RequestStatus;
                             traning.MemberId = ReqTrainer.MemberId;
-                            traning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == ReqTrainer.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                            traning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == ReqTrainer.MemberId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
                             traning.Id = ReqTrainer.RequestId;
                         }
                         else
@@ -789,7 +792,7 @@ namespace ServiceLayer
                         REtraning.Date = item.TrainingDate;
                         REtraning.MemberId = item.MemberId;
                         REtraning.TimeSlot = item.TrainingTimeSlot;
-                        REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                        REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
                         REtraning.Status = item.RequestStatus;
                         TrainingList.Add(REtraning);
                     }
@@ -829,23 +832,31 @@ namespace ServiceLayer
                 var ReTrainer = uow.DbContext.RequestTrainers.Where(x => x.RequestId == trainers.Id).FirstOrDefault();
                 if (ReTrainer != null)
                 {
+                    var member = uow.MembershipRepository.GetByID(ReTrainer.MemberId);
                     ReTrainer.RequestStatus = trainers.Status;
                     ReTrainer.ModifiedDate = GetDateTimeByLocalZone.GetDateTime();
                     ReTrainer.ModifiedBy = trainers.EmployeeId;
                     uow.RequestTrainersRepository.Update(ReTrainer);
                     uow.Save();
 
-                    if (ReTrainer.RequestStatus == "Accepted") {
+                    if (ReTrainer.RequestStatus != "Pending") {
                         var request = new MailRequest();
-                        request.ToEmail = Empl.Email;
-                        request.Subject = "New Office Account";
+                        request.ToEmail = member.Email;
+                        request.Subject = "New Personal Training Request";
 
                         StringBuilder body = new StringBuilder();
 
-                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Empl.FirstName + ",</p>");
-                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You can now login at JK Fitness Backoffice web application.</p>");
-                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
-                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Empl.Email + "</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + member.FirstName + member.LastName + ",</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You got an update for your new training request from your trainer.</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Trainer: " + Empl.FirstName + Empl.LastName + " </p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Date: " + ReTrainer.TrainingDate.ToShortDateString() + "</p>");
+                        body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Time: " + ReTrainer.TrainingTimeSlot + "</p>");
+
+                        if(ReTrainer.RequestStatus == "Declined")
+                            body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px; color:red;'>Status: " + ReTrainer.RequestStatus + "</p>");
+                        else
+                            body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px; color:green;'>Status: " + ReTrainer.RequestStatus + "</p>");
+
                         body.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Regards,<br /> JK Fitness group </ p > ");
 
                         request.Body = body.ToString();

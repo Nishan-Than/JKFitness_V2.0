@@ -2,6 +2,7 @@
     var CurDate = new Date();
     $("#ReqDate").val(getFormattedDate(CurDate));
     LoadMonths();
+    ListNewRequest();
 });
 $(function () {
     //Date picker
@@ -69,8 +70,16 @@ function ListNewRequest() {
                 for (var i = 0; i < Result.length; i++) {
                     tr.push('<tr>');
                     tr.push("<td>" + Result[i].timeSlot + "</td>");
-                    if (Result[i].memberId != 0)
-                        tr.push("<td>" + Result[i].memberId + "</td>");
+                    if (Result[i].memberId != 0) {
+                        if (Result[i].memberId.toString().length == 1)
+                            tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+                        else if (Result[i].memberId.toString().length == 2)
+                            tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+                        else if (Result[i].memberId.toString().length == 3)
+                            tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+                        else
+                            tr.push("<td>" + Result[i].memberId + "</td>");
+                    }                       
                     else
                         tr.push("<td>" + "-" + "</td>");
 
@@ -121,7 +130,7 @@ function ListTrainerHistory(month) {
 
     var data = new FormData();
     data.append("Month", month);
-
+    $("#wait").css("display", "block");
     $.ajax({
         type: 'POST',
         url: $("#TrainingRequestHistroy").val(),
@@ -130,7 +139,7 @@ function ListTrainerHistory(month) {
         processData: false,
         contentType: false,
         success: function (response) {
-            $("#waitform").css("display", "none");
+            $("#wait").css("display", "none");
             var myData = jQuery.parseJSON(JSON.stringify(response));
             if (myData.code == "1") {
                 var Result = myData.data;
@@ -139,7 +148,15 @@ function ListTrainerHistory(month) {
                     tr.push('<tr>');
                     tr.push("<td>" + getFormattedDate(new Date(Result[i].date)) + "</td>");
                     tr.push("<td>" + Result[i].timeSlot + "</td>");
-                    tr.push("<td>" + Result[i].memberId + "</td>");
+                    if (Result[i].memberId.toString().length == 1)
+                        tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+                    else if (Result[i].memberId.toString().length == 2)
+                        tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+                    else if (Result[i].memberId.toString().length == 3)
+                        tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+                    else
+                        tr.push("<td>" + Result[i].memberId + "</td>");
+
                     tr.push("<td>" + Result[i].memberName + "</td>");
                    
                     if (Result[i].status == "Accepted")
@@ -184,7 +201,7 @@ function AcceptTrainingRequest(id) {
     var data = new FormData();
     data.append("Id", id);
     data.append("Status", "Accepted");
-
+    $("#wait").css("display", "block");
     $.ajax({
         type: 'POST',
         url: $("#UpdateRequestTrainerStatus").val(),
@@ -193,7 +210,7 @@ function AcceptTrainingRequest(id) {
         processData: false,
         contentType: false,
         success: function (response) {
-            $("#waitform").css("display", "none");
+            $("#wait").css("display", "none");
             var myData = jQuery.parseJSON(JSON.stringify(response));
             if (myData.code == "1") {
                 var Result = myData.data;
@@ -226,7 +243,7 @@ function RejectTrainingRequest(id) {
     var data = new FormData();
     data.append("Id", id);
     data.append("Status", "Declined");
-
+    $("#wait").css("display", "block");
     $.ajax({
         type: 'POST',
         url: $("#UpdateRequestTrainerStatus").val(),
@@ -235,7 +252,7 @@ function RejectTrainingRequest(id) {
         processData: false,
         contentType: false,
         success: function (response) {
-            $("#waitform").css("display", "none");
+            $("#wait").css("display", "none");
             var myData = jQuery.parseJSON(JSON.stringify(response));
             if (myData.code == "1") {
                 var Result = myData.data;

@@ -1,6 +1,7 @@
 ﻿using DataLayer.Models;
 using Microsoft.AspNetCore.Mvc;
 using ServiceLayer;
+using ServiceLayer.Password;
 using ServiceLayer.VMmodel;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace Jk_Fitness.Controllers
         {
             try
             {
-                webResponce = employee.ListTrainerDetails();
+                webResponce = employee.ListTrainerDetails(Convert.ToInt32(Crypto.DecryptString(Request.Cookies["jkfitness.member"])));
                 return webResponce;
             }
             catch (Exception Ex)

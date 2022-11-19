@@ -36,31 +36,48 @@ namespace ServiceLayer
                         DateTime EveningIntime = DateTime.Parse(Empl.EveningInTime);
                         DateTime EveningOutTime = DateTime.Parse(Empl.EveningOutTime);
 
-                        if ((MoriningIntime <= GetDateTimeByLocalZone.GetDateTime() && MoriningOutTime >= GetDateTimeByLocalZone.GetDateTime()) || (EveningIntime <= GetDateTimeByLocalZone.GetDateTime() && EveningOutTime >= GetDateTimeByLocalZone.GetDateTime())) {
-                            if (string.Compare(Crypto.Hash(employee.Password.Trim()), Empl.Password) == 0)
+                        //if ((MoriningIntime <= GetDateTimeByLocalZone.GetDateTime() && MoriningOutTime >= GetDateTimeByLocalZone.GetDateTime()) || (EveningIntime <= GetDateTimeByLocalZone.GetDateTime() && EveningOutTime >= GetDateTimeByLocalZone.GetDateTime())) {
+                        //    if (string.Compare(Crypto.Hash(employee.Password.Trim()), Empl.Password) == 0)
+                        //    {
+                        //        webResponce = new WebResponce()
+                        //        {
+                        //            Code = 1,
+                        //            Message = "Success",
+                        //            Data = Empl
+                        //        };
+                        //    }
+                        //    else
+                        //    {
+                        //        webResponce = new WebResponce()
+                        //        {
+                        //            Code = 0,
+                        //            Message = "Incorrect Password",
+                        //        };
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //    webResponce = new WebResponce()
+                        //    {
+                        //        Code = 0,
+                        //        Message = "You can not Access right now"
+                        //    };
+                        //}
+                        if (string.Compare(Crypto.Hash(employee.Password.Trim()), Empl.Password) == 0)
+                        {
+                            webResponce = new WebResponce()
                             {
-                                webResponce = new WebResponce()
-                                {
-                                    Code = 1,
-                                    Message = "Success",
-                                    Data = Empl
-                                };
-                            }
-                            else
-                            {
-                                webResponce = new WebResponce()
-                                {
-                                    Code = 0,
-                                    Message = "Incorrect Password",
-                                };
-                            }
+                                Code = 1,
+                                Message = "Success",
+                                Data = Empl
+                            };
                         }
                         else
                         {
                             webResponce = new WebResponce()
                             {
                                 Code = 0,
-                                Message = "You can not Access right now"
+                                Message = "Incorrect Password",
                             };
                         }
 

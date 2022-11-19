@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿document.getElementById("memberName").innerHTML = JSON.parse(window.localStorage.getItem('Mem')).Name;
+
+$(document).ready(function () {
     LoadTrainers();
     var CurDate = new Date();
     $("#Date").val(getFormattedDate(CurDate));
@@ -35,7 +37,7 @@ function LoadTrainers() {
                
                 Trainer.append($("<option/>").val(0).text("-Select Trainer-"));
                 $.each(Result, function () {
-                    Trainer.append($("<option/>").val(this.employeeId).text(this.firstName));
+                    Trainer.append($("<option/>").val(this.employeeId).text(this.firstName + " " + this.lastName));
                 });
             } else {
                 Swal.fire({
@@ -79,8 +81,16 @@ function LoadTrainerTimeSlot() {
                     tr.push("<td>" + Result[i].timeSlot + "</td>");
                     if (Result[i].status == "Available")
                         tr.push("<td><button onclick=\"NewTrainingRequest('" + Result[i].timeSlot + "')\" class=\"btn btn-primary\"> Request </button></td>");
-                    else
-                        tr.push("<td>" + Result[i].status + "</td>");
+                    else {
+                        if (Result[i].status == "Pending")
+                            tr.push("<td><strong style=\"color:orange\">Pending</strong></td>");
+                        else if (Result[i].status == "Accepted")
+                            tr.push("<td><strong style=\"color:green\">Accepted</strong></td>");
+                        else if (Result[i].status == "Declined")
+                            tr.push("<td><strong style=\"color:red\">Declined</strong></td>");
+                        else
+                            tr.push("<td>" + Result[i].status + "</td>");
+                    }
                    
                     tr.push('</tr>');
                 }
@@ -226,7 +236,15 @@ function LoadTrainingHistroy(Month) {
                     tr.push("<td>" + getFormattedDate(new Date(Result[i].date)) + "</td>");
                     tr.push("<td>" + Result[i].timeSlot + "</td>");
                     tr.push("<td>" + Result[i].trainer + "</td>");
-                    tr.push("<td>" + Result[i].status + "</td>");
+                    if (Result[i].status == "Pending")
+                        tr.push("<td><strong style=\"color:orange\">Pending</strong></td>");
+                    else if (Result[i].status == "Accepted")
+                        tr.push("<td><strong style=\"color:green\">Accepted</strong></td>");
+                    else if (Result[i].status == "Declined")
+                        tr.push("<td><strong style=\"color:red\">Declined</strong></td>");
+                    else
+                        tr.push("<td>" + Result[i].status + "</td>");
+
                    
                     tr.push('</tr>');
                 }
@@ -255,3 +273,30 @@ function LoadTrainingHistroy(Month) {
 $("#Month").change(function () {
     LoadTrainingHistroy($('#Month').val());
 });
+
+function SignOut() {
+    $.ajax({
+        type: 'GET',
+        url: $("#SignOutLogin").val(),
+        dataType: 'json',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                window.localStorage.clear();
+                window.location.replace($("#LoginHome").val());
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: myData.message,
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+        }
+    });
+}

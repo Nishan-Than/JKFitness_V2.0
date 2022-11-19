@@ -41,18 +41,26 @@
     <link href="~/plugins/DataTableNew/datatables.min.css" rel="stylesheet" />
 </head>
 <body>
-
     <div class="row">
         <div class="col-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="form-group">
-                        <h3 class="card-title">Member Dashboard</h3>
+                    <div class="form-group row col-md-12">
+                        <div class="col-md-11">
+                            <h2>Welcome <span id="memberName"></span></h2>
+                        </div>
+                        <div class="col-md-1">
+                            <a href="/" onclick="SignOut()" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
+                        </div>
                     </div>
                 </div>
                 <div class="card-body">
                     <div class="col-md-12 form-group row">
                         <div class="col-md-5">
+                            <div class="row">
+                                <h2>New Request</h2>
+                            </div>
+                            <br />
                             <div class="form-group row ">
                                 <label class="control-label col-md-4 col-sm-4 ">Date</label>
                                 <div class="input-group date col-md-8 col-sm-8" id="Tdate" data-target-input="nearest">
@@ -87,12 +95,18 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-7">
+                        <div class="col-md-1"></div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <h2>Training History</h2>
+                            </div>
+                            <br />
                             <div class="form-group row ">
-                                <label class="control-label col-md-4 col-sm-4 ">Month</label>
-                                <div class="col-md-8 col-sm-8">
+                                <label class="control-label col-md-2 col-sm-2 ">Month</label>
+                                <div class="col-md-4 col-sm-4">
                                     <select class="form-control" id="Month"></select>
                                 </div>
+                                <div class="col-md-2 col-sm-2"></div>
                             </div>
                             <div class="card-footer table-responsive">
                                 <table id="tblTrainingHistroy" class="table table-bordered table-striped tblTrainingHistroy">
@@ -124,6 +138,8 @@
         <input type="hidden" id="NewTrainingRequest" value="@Url.Action("NewTrainingRequest", "MemberHome")" />
         <input type="hidden" id="SaveNewTrainingRequest" value="@Url.Action("SaveNewTrainingRequest", "MemberHome")" />
         <input type="hidden" id="TrainingHistroy" value="@Url.Action("TrainingHistroy", "MemberHome")" />
+        <input type="hidden" id="SignOutLogin" value="@Url.Action("MemberSignOutLogin","Login")" />
+        <input type="hidden" id="LoginHome" value="@Url.Action("Initial","Login")" />
     </div>
 
 
