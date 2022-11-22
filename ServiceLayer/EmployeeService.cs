@@ -928,6 +928,56 @@ namespace ServiceLayer
             }
         }
 
+        public WebResponce AllTrainingHistroyPerBranch(TrainingVM trainers)
+        {
+            try
+            {
+                var TrainingRequest = (from b in uow.DbContext.RequestTrainers.Where(x => x.TrainingDate.Year == trainers.Year && x.TrainingDate.Month == trainers.Month)
+                                       join m in uow.DbContext.Employees.Where(x => x.Branch == trainers.Branch.Trim()) on b.EmployeeId equals m.EmployeeId
+                                       select b).ToList();
+
+                if (TrainingRequest.Count != 0)
+                {
+                    List<TrainingVM> TrainingList = new List<TrainingVM>();
+                    foreach (var item in TrainingRequest)
+                    {
+                        var REtraning = new TrainingVM();
+                        REtraning.Date = item.TrainingDate;
+                        REtraning.MemberId = item.MemberId;
+                        REtraning.TimeSlot = item.TrainingTimeSlot;
+                        REtraning.EmployeeName = uow.DbContext.Employees.Where(x => x.EmployeeId == item.EmployeeId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
+                        REtraning.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == item.MemberId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
+                        REtraning.Status = item.RequestStatus;
+                        TrainingList.Add(REtraning);
+                    }
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success",
+                        Data = TrainingList
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Seems Like Doesn't have Records!"
+                    };
+                }
+
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
         #endregion
 
     }

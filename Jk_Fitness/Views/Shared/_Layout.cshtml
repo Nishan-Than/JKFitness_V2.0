@@ -151,11 +151,11 @@
                                     </a>
                                 </li>
                                 @*<li class="nav-item" id="MenuAttendance">
-                                        <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Attendance</p>
-                                        </a>
-                                    </li>*@
+                    <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Attendance</p>
+                    </a>
+                </li>*@
                                 <li class="nav-item" id="AddAttendance">
                                     <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -335,7 +335,7 @@
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Expense Types</p>
                                     </a>
-                                </li>                               
+                                </li>
                                 <li class="nav-item" id="MenuMembershipPackage">
                                     <a href="@Url.Action("MembershipType", "Settings")" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -355,6 +355,14 @@
                                     </a>
                                 </li>
                             </ul>
+                        </li>
+                        <li class="nav-item" id="TrainingHistory">
+                            <a href="@Url.Action("ViewTrainingRequestHistroy", "Home")" class="nav-link active">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>
+                                    Training Histories
+                                </p>
+                            </a>
                         </li>
                         <li class="nav-item" id="GymAccounts">
                             <a href="@Url.Action("GymAccounts", "PaymentsExpenses")" class="nav-link active">

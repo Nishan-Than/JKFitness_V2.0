@@ -18,5 +18,7 @@ namespace ServiceLayer.VMmodel
         public string EmployeeId { get; set; }
         public int Month { get; set; }
         public int Year { get; set; }
+        public string Branch { get; set; }
+        public string EmployeeName { get; set; }
     }
 }

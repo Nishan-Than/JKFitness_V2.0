@@ -81,6 +81,30 @@ namespace Jk_Fitness.Controllers
             }
         }
 
+        public IActionResult ViewTrainingRequestHistroy()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public WebResponce AllTrainingHistroyPerBranch(TrainingVM training)
+        {
+            try
+            {
+                webResponce = employee.AllTrainingHistroyPerBranch(training);
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
+
         [HttpPost]
         public WebResponce UpdateRequestTrainerStatus(TrainingVM training)
         {

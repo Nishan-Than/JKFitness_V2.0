@@ -1,0 +1,60 @@
+﻿@{ ViewData["Title"] = "Training History";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <div class="form-group">
+                    <h3 class="card-title">@ViewData["Title"]</h3>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-md-3">
+                        <label>Branch</label>
+                        <div class="col-md-12 col-sm-12 ">
+                            <select class="form-control" id="Branch"></select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Year</label>
+                        <div class="col-md-12 col-sm-12 ">
+                            <select class="form-control" id="Year"></select>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-3">
+                        <label>Month</label>
+                        <div class="col-md-12 col-sm-12">
+                            <select class="form-control" id="Month"></select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer table-responsive">
+                <table id="example1" class="table table-bordered table-striped tblRequestHistroy">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time Slot</th>
+                            <th>Trainer Name</th>
+                            <th>Member Name</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbodyidMem">
+                    </tbody>
+                </table>
+                <div class="msg-block" id="noRecordsmem">
+                    <label>No Records found.</label>
+                </div>
+            </div>
+            <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
+        </div>
+    </div>
+
+    <input type="hidden" id="GetBranchDetails" value="@Url.Action("GetBranchDetails", "Membership" )" />
+    <input type="hidden" id="TrainingRequestHistroy" value="@Url.Action("AllTrainingHistroyPerBranch", "Home" )" />
+    <input type="hidden" id="GetStartandEndYear" value="@Url.Action("GetTrainingStartandEndYear", "Home" )" />
+</div>
+<script src="~/js/page.trainingHistory.js"></script>

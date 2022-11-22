@@ -3,7 +3,7 @@
 });
 
 function ListMenuRights() {
-    
+
     $("#wait").css("display", "block");
     $.ajax({
         type: 'GET',
@@ -21,14 +21,11 @@ function ListMenuRights() {
                         tr.push("<td><b><font size='3'>" + Menu[i].menuName + "</font></b></td>");
                     else
                         tr.push("<td>&nbsp;&nbsp;--" + Menu[i].menuName + "</td>");
+
                     tr.push("<td><input type=\"checkbox\" " + Menu[i].admin + " onclick=\"updateRoles(this,'admin'," + Menu[i].id + ");\"></td>");
                     tr.push("<td><input type=\"checkbox\" " + Menu[i].staff + " onclick=\"updateRoles(this,'Staff'," + Menu[i].id + ");\"></td>");
                     tr.push("<td><input type=\"checkbox\" " + Menu[i].temporaryStaff + " onclick=\"updateRoles(this,'TemporaryStaff'," + Menu[i].id + ");\"></td>");
                     tr.push('</tr>');
-
-
-
-
                 }
                 $("#wait").css("display", "none");
                 $("#tbodyid").empty();
@@ -58,7 +55,7 @@ function ListMenuRights() {
 function updateRoles(Control, Name, Id) {
     var id = Control.checked ? 1 : 0;
 
-    var data = '{"Id":"' + Id + '", "' + Name+'":"' + id + '"}';
+    var data = '{"Id":"' + Id + '", "' + Name + '":"' + id + '"}';
 
     $.ajax({
         type: 'POST',
@@ -68,16 +65,7 @@ function updateRoles(Control, Name, Id) {
         contentType: 'application/json; charset=utf-8',
         success: function (response) {
             var myData = jQuery.parseJSON(JSON.stringify(response));
-            if (myData.code == "1") {
-                //Swal.fire({
-                //    position: 'center',
-                //    icon: 'success',
-                //    title: 'Your work has been Updated',
-                //    showConfirmButton: false,
-                //    timer: 1500
-                //});
-                
-            } else {
+            if (myData.code != "1") {
                 Swal.fire({
                     icon: 'error',
                     title: 'Oops...',

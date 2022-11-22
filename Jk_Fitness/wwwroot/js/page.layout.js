@@ -181,6 +181,11 @@ function UserRights() {
                 else
                     $("#GymAccounts").attr('hidden', true);
 
+                if (Result[65].role == 1 || Result[65].role == 2)
+                    $("#ViewTrainingRequestHistroy").attr('hidden', false);
+                else
+                    $("#ViewTrainingRequestHistroy").attr('hidden', true);
+
             } else {
                 Swal.fire({
                     icon: 'error',
