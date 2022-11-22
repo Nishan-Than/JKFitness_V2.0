@@ -642,11 +642,11 @@ namespace ServiceLayer
             return webResponce;
         }
 
-        public WebResponce TrainingHistroy(TrainingVM training)
+        public WebResponce MemberTrainingHistroy(TrainingVM training)
         {
             try
             {
-                var TrainingHis = uow.DbContext.RequestTrainers.Where(x => x.MemberId == training.MemberId && x.TrainingDate.Month==training.Month).ToList();
+                var TrainingHis = uow.DbContext.RequestTrainers.Where(x => x.MemberId == training.MemberId && x.TrainingDate.Year == training.Year && x.TrainingDate.Month==training.Month).ToList();
                 if (TrainingHis.Count != 0)
                 {
                     List<TrainingVM> TrainingList = new List<TrainingVM>();
@@ -782,7 +782,7 @@ namespace ServiceLayer
         {
             try
             {
-                var TrainingRequest = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == trainers.EmployeeId && x.TrainingDate.Month == trainers.Month).ToList();
+                var TrainingRequest = uow.DbContext.RequestTrainers.Where(x => x.EmployeeId == trainers.EmployeeId && x.TrainingDate.Year == trainers.Year && x.TrainingDate.Month == trainers.Month).ToList();
                 if (TrainingRequest.Count != 0)
                 {
                     List<TrainingVM> TrainingList = new List<TrainingVM>();
@@ -889,6 +889,43 @@ namespace ServiceLayer
                 };
             }
             return webResponce;
+        }
+
+        public WebResponce GetTrainingStartandEndYear()
+        {
+            try
+            {
+                var trainingHistory = uow.RequestTrainersRepository.GetAll().OrderBy(x => x.TrainingDate).ToList();
+                var trainingYears = new TrainingYears();
+
+                if (trainingHistory.Count > 0)
+                {
+                    trainingYears.StartYear = trainingHistory.First().TrainingDate.Year;
+                    trainingYears.EndYear = trainingHistory.Last().TrainingDate.Year;
+                }
+                else
+                {
+                    trainingYears.StartYear = GetDateTimeByLocalZone.GetDateTime().Year;
+                    trainingYears.EndYear = GetDateTimeByLocalZone.GetDateTime().Year;
+                }
+
+                webResponce = new WebResponce()
+                {
+                    Code = 1,
+                    Message = "Success",
+                    Data = trainingYears
+                };
+                return webResponce;
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+                return webResponce;
+            }
         }
 
         #endregion

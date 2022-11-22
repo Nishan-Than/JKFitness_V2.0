@@ -86,7 +86,7 @@ function LoadAttendance() {
                 var Result = myData.data;
                 MembersAttendanceArray = Result;
                 var tr = [];
-				
+
                 if (Result.length > 0) {
                     $("#membersCount").css("display", "flex");
                     document.getElementById("membersCount").innerHTML = "Total attended members " + Result.length;
@@ -95,7 +95,16 @@ function LoadAttendance() {
                     $("#membersCount").css("display", "none");
                 for (var i = 0; i < Result.length; i++) {
                     tr.push('<tr>');
-                    tr.push("<td>" + Result[i].memberId + "</td>");;
+
+                    if (Result[i].memberId.toString().length == 1)
+                        tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+                    else if (Result[i].memberId.toString().length == 2)
+                        tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+                    else if (Result[i].memberId.toString().length == 3)
+                        tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+                    else
+                        tr.push("<td>" + Result[i].memberId + "</td>");
+
                     tr.push("<td>" + Result[i].firstName + " " + Result[i].lastName + "</td>");
 
                     if (Result[i].active == true)
@@ -194,7 +203,15 @@ function SearchMemberAttendance() {
         var tr = [];
         for (var i = 0; i < Result.length; i++) {
             tr.push('<tr>');
-            tr.push("<td>" + Result[i].memberId + "</td>");;
+            if (Result[i].memberId.toString().length == 1)
+                tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 2)
+                tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 3)
+                tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+            else
+                tr.push("<td>" + Result[i].memberId + "</td>");
+
             tr.push("<td>" + Result[i].firstName + " " + Result[i].lastName + "</td>");
 
             if (Result[i].active == true)

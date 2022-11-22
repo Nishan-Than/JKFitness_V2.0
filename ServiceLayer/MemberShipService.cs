@@ -441,14 +441,13 @@ namespace ServiceLayer
         {
             try
             {
-                var val = GetDateTimeByLocalZone.GetDateTime().Date;
-
                 List<MembersAttendance> MemberAttendances = uow.MembersAttendanceRepository.GetAll().Where(x => x.AttendDate.Date == attendances.AttendanceDate).ToList();
                 if (MemberAttendances != null && MemberAttendances.Count > 0)
                 {
                     var records = (from b in uow.DbContext.MembersAttendances.Where(x => x.AttendDate.Date == attendances.AttendanceDate.Date)
                                    join m in uow.DbContext.MemberShips.Where(x => x.Branch == attendances.Branch.Trim()) on b.MembershipId equals m.MemberId
-                                   select new { m.MemberId, m.FirstName, m.LastName, m.Branch,m.Active, b.MorningInTime, b.MorningOutTime, b.EveningInTime, b.EveningOutTime, AttendDate = b.AttendDate.Date == DateTime.Now.Date ? b.AttendDate.Date : default, Id = b.Id > 0 ? b.Id : 0 }).ToList();
+                                   select new { m.MemberId, m.FirstName, m.LastName, m.Branch,m.Active, b.MorningInTime, b.MorningOutTime, b.EveningInTime, b.EveningOutTime, 
+                                       AttendDate = b.AttendDate.Date == DateTime.Now.Date ? b.AttendDate.Date : default, Id = b.Id > 0 ? b.Id : 0 }).ToList();
 
                     if(records.Count > 0)
                     {

@@ -100,5 +100,24 @@ namespace Jk_Fitness.Controllers
                 return webResponce;
             }
         }
+
+        [HttpGet]
+        public WebResponce GetTrainingStartandEndYear()
+        {
+            try
+            {
+                webResponce = employee.GetTrainingStartandEndYear();
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
     }
 }

@@ -1,7 +1,7 @@
 ﻿$(document).ready(function () {
     var CurDate = new Date();
     $("#ReqDate").val(getFormattedDate(CurDate));
-    LoadMonths();
+    LoadYear()    
     ListNewRequest();
 });
 $(function () {
@@ -11,6 +11,47 @@ $(function () {
     });
 });
 
+function LoadYear() {
+
+    $.ajax({
+        type: 'GET',
+        url: $("#GetStartandEndYear").val(),
+        dataType: 'json',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+
+                let year_satart = parseInt(myData.data.startYear);
+                let year_end = parseInt(myData.data.endYear); // current year
+                let year_selected = year_end;
+
+                let option = '';
+
+                for (let i = year_satart; i <= year_end; i++) {
+                    let selected = (i === year_selected ? ' selected' : '');
+                    option += '<option value="' + i + '"' + selected + '>' + i + '</option>';
+                }
+
+                document.getElementById("Year").innerHTML = option;
+                LoadMonths();
+
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: myData.message,
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+        }
+    });    
+}
+
 function LoadMonths() {
     let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     var month_selected = (new Date).getMonth(); // current month
@@ -19,20 +60,13 @@ function LoadMonths() {
     for (let i = 0; i < months.length; i++) {
         let month_number = (i + 1);
 
-        // value month number with 0. [01 02 03 04..]
-        //let month = (month_number <= 9) ? '0' + month_number : month_number;
-
-        // or value month number. [1 2 3 4..]
         let month = month_number;
-
-        // or value month names. [January February]
-        // let month = months[i];
 
         let selected = (i === month_selected ? ' selected' : '');
         option += '<option value="' + month + '"' + selected + '>' + months[i] + '</option>';
     }
     document.getElementById("Month").innerHTML = option;
-    ListTrainerHistory($('#Month').val());
+    ListTrainerHistory($('#Year').val(), $('#Month').val());
 }
 
 function getFormattedDate(date) {
@@ -124,12 +158,15 @@ $('#btnSearch').click(function () {
     ListNewRequest();
 });
 
-function ListTrainerHistory(month) {
+function ListTrainerHistory(year, month) {
 
     date = $('#Month').val();
 
     var data = new FormData();
+
+    data.append("Year", year);
     data.append("Month", month);
+
     $("#wait").css("display", "block");
     $.ajax({
         type: 'POST',
@@ -193,7 +230,11 @@ function ListTrainerHistory(month) {
 };
 
 $("#Month").change(function () {
-    ListTrainerHistory($('#Month').val());
+    ListTrainerHistory($('#Year').val(), $('#Month').val());
+});
+
+$("#Year").change(function () {
+    ListTrainerHistory($('#Year').val(), $('#Month').val());
 });
 
 function AcceptTrainingRequest(id) {

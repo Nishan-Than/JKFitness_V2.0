@@ -166,7 +166,16 @@ function BindMembershipTable(Result) {
 
     $.each(Result, function (key, payment) {
         tr.push('<tr>');
-        tr.push("<td>" + payment.paymentDetails.memberId + "</td>");
+
+        if (payment.paymentDetails.memberId.toString().length == 1)
+            tr.push("<td>" + "000" + payment.paymentDetails.memberId.toString() + "</td>");
+        else if (payment.paymentDetails.memberId.toString().length == 2)
+            tr.push("<td>" + "00" + payment.paymentDetails.memberId.toString() + "</td>");
+        else if (payment.paymentDetails.memberId.toString().length == 3)
+            tr.push("<td>" + "0" + payment.paymentDetails.memberId.toString() + "</td>");
+        else
+            tr.push("<td>" + payment.paymentDetails.memberId + "</td>");
+
         tr.push("<td>" + payment.firstName + " " + payment.lastName + "</td>");
         tr.push("<td>" + payment.packageType + "</td>");
         tr.push("<td>" + payment.packageAmount + "</td>");
@@ -193,7 +202,7 @@ function BindMembershipTable(Result) {
             } else {
                 tr.push("<td></td>");
             }
-                
+
         }
         tr.push('</tr>');
     });
@@ -245,7 +254,7 @@ function ViewPartialPay(Id) {
             tr.push("<td><button type=\"button\" onclick=\"DeletePartialPayment('" + paymentDetails[0].partialPayments[i].id + "', '" + paymentDetails[0].paymentDetails.id + "')\" class=\"btn btn-danger\"><i class=\"fa fa-trash\"></i></button></td>");
             $("#ViewAction").attr('hidden', false);
         }
-        else {         
+        else {
             $("#ViewAction").attr('hidden', true);
         }
         tr.push('</tr>');
@@ -384,7 +393,15 @@ function SearchMemberAttendance() {
 
         $.each(Result, function (key, payment) {
             tr.push('<tr>');
-            tr.push("<td>" + payment.paymentDetails.memberId + "</td>");
+            if (payment.paymentDetails.memberId.toString().length == 1)
+                tr.push("<td>" + "000" + payment.paymentDetails.memberId.toString() + "</td>");
+            else if (payment.paymentDetails.memberId.toString().length == 2)
+                tr.push("<td>" + "00" + payment.paymentDetails.memberId.toString() + "</td>");
+            else if (payment.paymentDetails.memberId.toString().length == 3)
+                tr.push("<td>" + "0" + payment.paymentDetails.memberId.toString() + "</td>");
+            else
+                tr.push("<td>" + payment.paymentDetails.memberId + "</td>");
+
             tr.push("<td>" + payment.firstName + " " + payment.lastName + "</td>");
             tr.push("<td>" + payment.packageType + "</td>");
             tr.push("<td>" + payment.packageAmount + "</td>");

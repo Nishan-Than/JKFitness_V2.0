@@ -158,30 +158,30 @@ function BindMembershipPayment(Result) {
             tr.push('</tr>');
 
             $.each(account.summarybyBranch, function (key, byBranch) {
-                tr.push('<tr>');
 
-                tr.push("<td><strong style=\"color:black\">" + byBranch.branch + "</strong></td>");
+                //if (byBranch.totalByBranch != 0) {
 
-                $.each(byBranch.summarybyMonth, function (key, byMonth) {
+                    tr.push('<tr>');
+                    tr.push("<td><strong style=\"color:black\">" + byBranch.branch + "</strong></td>");
+                    $.each(byBranch.summarybyMonth, function (key, byMonth) {
 
-                    if (byMonth.amount != 0) {
-                        tr.push("<td>" + byMonth.amount.toFixed(2) + "</td>");
+                        if (byMonth.amount != 0) {
+                            tr.push("<td>" + byMonth.amount.toFixed(2) + "</td>");
+                        }
+                        else {
+                            tr.push("<td> - </td>");
+                        }
+
+                    });
+                    if (account.isIncome) {
+                        tr.push("<td><strong style=\"color:green\">" + byBranch.totalByBranch.toFixed(2) + "</strong></td>");
                     }
                     else {
-                        tr.push("<td> - </td>");
+                        tr.push("<td><strong style=\"color:darkred\">" + byBranch.totalByBranch.toFixed(2) + "</strong></td>");
                     }
-                    
-                });
+                    tr.push('</tr>');
+                //}
 
-                if (account.isIncome) {
-                    tr.push("<td><strong style=\"color:green\">" + byBranch.totalByBranch.toFixed(2) + "</strong></td>");
-                }
-                else {
-                    tr.push("<td><strong style=\"color:darkred\">" + byBranch.totalByBranch.toFixed(2) + "</strong></td>");
-                }
-
-
-                tr.push('</tr>');
             });
 
             if (account.isIncome) {

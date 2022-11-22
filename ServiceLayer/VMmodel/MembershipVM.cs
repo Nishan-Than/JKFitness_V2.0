@@ -30,6 +30,12 @@ namespace ServiceLayer.VMmodel
         public int EndYear { get; set; }
     }
 
+    public class TrainingYears
+    {
+        public int StartYear { get; set; }
+        public int EndYear { get; set; }
+    }
+
     public class EmployeeSalaryVM
     {
         public string EmployeeId { get; set; }

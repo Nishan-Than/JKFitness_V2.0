@@ -309,14 +309,23 @@ function ListMemberDetails() {
                 var tr = [];
                 for (var i = 0; i < Result.length; i++) {
                     tr.push('<tr>');
-                    tr.push("<td>" + Result[i].memberId + "</td>");;
+
+                    if (Result[i].memberId.toString().length == 1)
+                        tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+                    else if (Result[i].memberId.toString().length == 2)
+                        tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+                    else if (Result[i].memberId.toString().length == 3)
+                        tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+                    else
+                        tr.push("<td>" + Result[i].memberId + "</td>");
+
                     tr.push("<td>" + Result[i].firstName + " " + Result[i].lastName + "</td>");
 
                     if (Result[i].nic == null)
                         tr.push("<td> - </td>");
                     else
                         tr.push("<td>" + Result[i].nic + "</td>");;
-                    
+
                     tr.push("<td>" + getFormattedDate(new Date(Result[i].packageExpirationDate)) + "</td>");;
                     tr.push("<td>" + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + "</td>");;
                     if (Result[i].active == true)
@@ -580,26 +589,26 @@ function SearchMembership() {
     var searchVal = $('#ValueforSearch').val();
     var searchOpt = $('#SearchOptions').val();
 
-        if (searchOpt == "1") {
-            Result = $.grep(Result, function (v) {
-                return ((v.firstName.search(new RegExp(searchVal, "i")) != -1) || (v.lastName.search(new RegExp(searchVal, "i")) != -1));
-            })
-        }
-        else if (searchOpt == "2") {
-            Result = $.grep(Result, function (v) {
-                return (v.nic.search(new RegExp(searchVal, "i")) != -1);
-            })
-        }
-        else if (searchOpt == "3") {
-            Result = $.grep(Result, function (v) {
-                return (v.contactNo.search(new RegExp(searchVal, "i")) != -1);
-            })
-        }
-        else {
-            Result = $.grep(Result, function (v) {
-                return (v.memberId === parseInt(searchVal));
-            })
-        }
+    if (searchOpt == "1") {
+        Result = $.grep(Result, function (v) {
+            return ((v.firstName.search(new RegExp(searchVal, "i")) != -1) || (v.lastName.search(new RegExp(searchVal, "i")) != -1));
+        })
+    }
+    else if (searchOpt == "2") {
+        Result = $.grep(Result, function (v) {
+            return (v.nic.search(new RegExp(searchVal, "i")) != -1);
+        })
+    }
+    else if (searchOpt == "3") {
+        Result = $.grep(Result, function (v) {
+            return (v.contactNo.search(new RegExp(searchVal, "i")) != -1);
+        })
+    }
+    else {
+        Result = $.grep(Result, function (v) {
+            return (v.memberId === parseInt(searchVal));
+        })
+    }
 
     $("#wait").css("display", "none");
     if (Result.length != 0) {
@@ -607,7 +616,14 @@ function SearchMembership() {
         var tr = [];
         for (var i = 0; i < Result.length; i++) {
             tr.push('<tr>');
-            tr.push("<td>" + Result[i].memberId + "</td>");;
+            if (Result[i].memberId.toString().length == 1)
+                tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 2)
+                tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 3)
+                tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+            else
+                tr.push("<td>" + Result[i].memberId + "</td>");;
             tr.push("<td>" + Result[i].firstName + " " + Result[i].lastName + "</td>");
 
             if (Result[i].nic == null)
@@ -658,7 +674,7 @@ $("#BranchforSearch").change(function () {
 });
 
 $("#StatusforSearch").change(function () {
-   $("#wait").css("display", "block");
+    $("#wait").css("display", "block");
     var Result = [];
 
     if ($('#StatusforSearch').val() != "All") {
@@ -682,7 +698,15 @@ $("#StatusforSearch").change(function () {
         var tr = [];
         for (var i = 0; i < Result.length; i++) {
             tr.push('<tr>');
-            tr.push("<td>" + Result[i].memberId + "</td>");;
+
+            if (Result[i].memberId.toString().length == 1)
+                tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 2)
+                tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 3)
+                tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+            else
+                tr.push("<td>" + Result[i].memberId + "</td>");;
             tr.push("<td>" + Result[i].firstName + " " + Result[i].lastName + "</td>");
 
             if (Result[i].nic == null)
@@ -760,7 +784,15 @@ $("#GenderSearch").change(function () {
         var tr = [];
         for (var i = 0; i < Result.length; i++) {
             tr.push('<tr>');
-            tr.push("<td>" + Result[i].memberId + "</td>");;
+
+            if (Result[i].memberId.toString().length == 1)
+                tr.push("<td>" + "000" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 2)
+                tr.push("<td>" + "00" + Result[i].memberId.toString() + "</td>");
+            else if (Result[i].memberId.toString().length == 3)
+                tr.push("<td>" + "0" + Result[i].memberId.toString() + "</td>");
+            else
+                tr.push("<td>" + Result[i].memberId + "</td>");;
             tr.push("<td>" + Result[i].firstName + " " + Result[i].lastName + "</td>");
 
             if (Result[i].nic == null)
@@ -911,7 +943,7 @@ function getFormattedDate(date) {
 }
 
 function ViewMember(Id) {
-   
+
     $('#btnAddMember').attr('hidden', true);
     $('#btnCancel').attr('hidden', true);
     $('.modal-body').addClass('freeze');
@@ -948,7 +980,7 @@ function ViewMember(Id) {
             $("#DOB").attr("disabled", true);
             $("#Age").attr("disabled", true);
         }
-      
+
         if (Result.gender == "Female") {
             $("#Frule").css("display", "flex");
         }

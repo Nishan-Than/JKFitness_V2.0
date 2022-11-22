@@ -216,14 +216,23 @@ function BindMembershipTable(Result) {
         .draw();
     $.each(Result, function (key, payment) {
 
-        TblMember.row.add(['<label> ' + payment.paymentDetails.memberId + ' </label>',
-        '<label> ' + payment.firstName + " " + payment.lastName + ' </label>',
-        '<label> ' + payment.packageType + ' </label>',
-        '<label> ' + payment.packageAmount + ' </label>',
-        '<label> ' + getFormattedDate(new Date(payment.paymentDetails.paymentDate)) + ' </label>',
-            '<label> Paid </label>',
+        var memberid;
+        if (payment.paymentDetails.memberId.toString().length == 1)
+            memberid = "000" + payment.paymentDetails.memberId.toString();
+        else if (payment.paymentDetails.memberId.toString().length == 2)
+            memberid = "00" + payment.paymentDetails.memberId.toString();
+        else if (payment.paymentDetails.memberId.toString().length == 3)
+            memberid = "0" + payment.paymentDetails.memberId.toString();
+        else
+            memberid = payment.paymentDetails.memberId;
 
-            /* ,'<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'*/
+        TblMember.row.add([
+            '<label> ' + memberid + ' </label>',
+            '<label> ' + payment.firstName + " " + payment.lastName + ' </label>',
+            '<label> ' + payment.packageType + ' </label>',
+            '<label> ' + payment.packageAmount + ' </label>',
+            '<label> ' + getFormattedDate(new Date(payment.paymentDetails.paymentDate)) + ' </label>',
+            '<label> Paid </label>'
         ]).draw(false);
 
 
@@ -284,7 +293,16 @@ function SearchMemberAttendance() {
 
         $.each(Result, function (key, payment) {
             tr.push('<tr>');
-            tr.push("<td>" + payment.paymentDetails.memberId + "</td>");
+
+            if (payment.paymentDetails.memberId.toString().length == 1)
+                tr.push("<td>" + "000" + payment.paymentDetails.memberId.toString() + "</td>");
+            else if (payment.paymentDetails.memberId.toString().length == 2)
+                tr.push("<td>" + "00" + payment.paymentDetails.memberId.toString() + "</td>");
+            else if (payment.paymentDetails.memberId.toString().length == 3)
+                tr.push("<td>" + "0" + payment.paymentDetails.memberId.toString() + "</td>");
+            else
+                tr.push("<td>" + payment.paymentDetails.memberId + "</td>");
+
             tr.push("<td>" + payment.firstName + " " + payment.lastName + "</td>");
             tr.push("<td>" + payment.packageType + "</td>");
             tr.push("<td>" + payment.packageAmount + "</td>");

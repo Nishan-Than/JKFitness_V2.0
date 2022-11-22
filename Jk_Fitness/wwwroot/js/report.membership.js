@@ -236,8 +236,19 @@ function ListMemberDetails() {
                         packageAmount = Result[i].payment;
                     }
 
+                    var memberID;
+
+                    if (Result[i].memberId.toString().length == 1)
+                        memberid = "000" + Result[i].memberId.toString();
+                    else if (Result[i].memberId.toString().length == 2)
+                        memberid = "00" + Result[i].memberId.toString();
+                    else if (Result[i].memberId.toString().length == 3)
+                        memberid = "0" + Result[i].memberId.toString();
+                    else
+                        memberid = Result[i].memberId;
+
                     TblMember.row.add([
-                        '<label> ' + Result[i].memberId + ' </label>',
+                        '<label> ' + memberid + ' </label>',
                         '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
                         '<label> ' + Result[i].nic + ' </label>',
                         '<label> ' + Result[i].contactNo + ' </label>',
@@ -316,17 +327,29 @@ $("#GenderSearch").change(function () {
             .draw();
 
         var tr = [];
+        var memberid;
+
+        if (Result[i].memberId.toString().length == 1)
+            memberid = "000" + Result[i].memberId.toString();
+        else if (Result[i].memberId.toString().length == 2)
+            memberid = "00" + Result[i].memberId.toString();
+        else if (Result[i].memberId.toString().length == 3)
+            memberid = "0" + Result[i].memberId.toString();
+        else
+            memberid = Result[i].memberId;
+
         for (var i = 0; i < Result.length; i++) {
 
-            TblMember.row.add(['<label> ' + Result[i].memberId + ' </label>',
-            '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
-            '<label> ' + Result[i].nic + ' </label>',
-            '<label> ' + Result[i].contactNo + ' </label>',
-            '<label> ' + Result[i].payment + ' </label>',
-            '<label> ' + Result[i].payment + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].joinDate)) + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].packageExpirationDate)) + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'
+            TblMember.row.add([
+                '<label> ' + memberid + ' </label>',
+                '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
+                '<label> ' + Result[i].nic + ' </label>',
+                '<label> ' + Result[i].contactNo + ' </label>',
+                '<label> ' + Result[i].payment + ' </label>',
+                '<label> ' + Result[i].payment + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].joinDate)) + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].packageExpirationDate)) + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'
             ]).draw(false);
         }
 
@@ -374,17 +397,30 @@ $("#StatusforSearch").change(function () {
         TblMember.clear()
             .draw();
         var tr = [];
+
+        var memberid;
+
+        if (Result[i].memberId.toString().length == 1)
+            memberid = "000" + Result[i].memberId.toString();
+        else if (Result[i].memberId.toString().length == 2)
+            memberid = "00" + Result[i].memberId.toString();
+        else if (Result[i].memberId.toString().length == 3)
+            memberid = "0" + Result[i].memberId.toString();
+        else
+            memberid = Result[i].memberId;
+
         for (var i = 0; i < Result.length; i++) {
 
-            TblMember.row.add(['<label> ' + Result[i].memberId + ' </label>',
-            '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
-            '<label> ' + Result[i].nic + ' </label>',
-            '<label> ' + Result[i].contactNo + ' </label>',
-            '<label> ' + Result[i].payment + ' </label>',
-            '<label> ' + Result[i].payment + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].joinDate)) + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].packageExpirationDate)) + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'
+            TblMember.row.add([
+                '<label> ' + memberid + ' </label>',
+                '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
+                '<label> ' + Result[i].nic + ' </label>',
+                '<label> ' + Result[i].contactNo + ' </label>',
+                '<label> ' + Result[i].payment + ' </label>',
+                '<label> ' + Result[i].payment + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].joinDate)) + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].packageExpirationDate)) + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'
             ]).draw(false);
         }
 
@@ -456,17 +492,29 @@ function SearchMembership() {
     if (Result.length != 0) {
         TblMember.clear().draw();
         var tr = [];
+
+        var memberid;
+        if (Result[i].memberId.toString().length == 1)
+            memberid = "000" + Result[i].memberId.toString();
+        else if (Result[i].memberId.toString().length == 2)
+            memberid = "00" + Result[i].memberId.toString();
+        else if (Result[i].memberId.toString().length == 3)
+            memberid = "0" + Result[i].memberId.toString();
+        else
+            memberid = Result[i].memberId;
+
         for (var i = 0; i < Result.length; i++) {
 
-            TblMember.row.add(['<label> ' + Result[i].memberId + ' </label>',
-            '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
-            '<label> ' + Result[i].nic + ' </label>',
-            '<label> ' + Result[i].contactNo + ' </label>',
-            '<label> ' + Result[i].payment + ' </label>',
-            '<label> ' + Result[i].payment + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].joinDate)) + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].packageExpirationDate)) + ' </label>',
-            '<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'
+            TblMember.row.add([
+                '<label> ' + memberid + ' </label>',
+                '<label> ' + Result[i].firstName + " " + Result[i].lastName + ' </label>',
+                '<label> ' + Result[i].nic + ' </label>',
+                '<label> ' + Result[i].contactNo + ' </label>',
+                '<label> ' + Result[i].payment + ' </label>',
+                '<label> ' + Result[i].payment + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].joinDate)) + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].packageExpirationDate)) + ' </label>',
+                '<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'
             ]).draw(false);
         }
 
