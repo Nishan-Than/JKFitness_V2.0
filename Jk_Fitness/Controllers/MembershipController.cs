@@ -423,5 +423,45 @@ namespace Jk_Fitness.Controllers
             return View();
         }
         #endregion
+
+        #region Load Provinces and Districts
+        [HttpGet]
+        public WebResponce ListProvinces()
+        {
+            try
+            {
+                webResponce = MemberShip.ListProvinces();
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
+
+        [HttpPost]
+        public WebResponce ListDistricts([FromBody] Districts districts)
+        {
+            try
+            {
+                webResponce = MemberShip.ListDistricts(districts);
+                return webResponce;
+            }
+            catch (Exception Ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = Ex.Message
+                };
+                return webResponce;
+            }
+        }
+        #endregion
     }
 }

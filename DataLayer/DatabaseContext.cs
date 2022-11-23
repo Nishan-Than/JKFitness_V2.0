@@ -30,5 +30,7 @@ namespace DataLayer
         public DbSet<PersonalTraining> PersonalTrainings { get; set; }
         public DbSet<ProvisionalMember> ProvisionalMembers { get; set; }
         public DbSet<RequestTrainers> RequestTrainers { get; set; }
+        public DbSet<Provinces> Province { get; set; }
+        public DbSet<Districts> District { get; set; }
     }
 }

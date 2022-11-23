@@ -16,8 +16,8 @@ namespace DataLayer
         public string LastName { get; set; }
         public string HouseNo { get; set; }
         public string Street { get; set; }
-        public string District { get; set; }
-        public string Province { get; set; }
+        public int District { get; set; }
+        public int Province { get; set; }
         public byte[] Image { get; set; }
         public string Email { get; set; }
         public string PhoneNo { get; set; }
