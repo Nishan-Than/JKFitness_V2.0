@@ -230,3 +230,20 @@ function NotificationValues() {
         }
     });
 }
+
+function AutoTask() {
+    $.ajax({
+        type: 'POST',
+        url: $("#AutoTask").val(),
+        dataType: 'json',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (jqXHR, exception) {
+        }
+    });
+}

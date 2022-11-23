@@ -47,6 +47,9 @@
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <button type="button" onclick="AutoTask()" class="btn btn-primary"><i class="fa fa-tachometer-alt"></i>Auto Task</button>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         <i class="far fa-bell"></i>
@@ -151,11 +154,11 @@
                                     </a>
                                 </li>
                                 @*<li class="nav-item" id="MenuAttendance">
-                    <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Attendance</p>
-                    </a>
-                </li>*@
+                            <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Attendance</p>
+                            </a>
+                        </li>*@
                                 <li class="nav-item" id="AddAttendance">
                                     <a href="@Url.Action("MembershipAttendance", "Membership")" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
@@ -358,7 +361,7 @@
                         </li>
                         <li class="nav-item" id="TrainingHistory">
                             <a href="@Url.Action("ViewTrainingRequestHistroy", "Home")" class="nav-link active">
-                                <i class="nav-icon fas fa-file"></i>
+                                <i class="nav-icon fas fa-bars"></i>
                                 <p>
                                     Training Histories
                                 </p>
@@ -409,6 +412,7 @@
                 <input type="hidden" id="LoginHome" value="@Url.Action("Initial","Login")" />
                 <input type="hidden" id="GetUserRights" value="@Url.Action("GetUserRights","Settings")" />
                 <input type="hidden" id="GetNotificationDetails" value="@Url.Action("GetNotifications", "Notification")" />
+                <input type="hidden" id="AutoTask" value="@Url.Action("AutoTask", "Task")" />
             </div>
             <!-- /.sidebar -->
         </aside>
