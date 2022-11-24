@@ -277,7 +277,15 @@ $("#btnClear").click(function () {
     Clear();
 })
 
-$("#search").click(function () {
+$("#Branch").change(function () {
+    Search();
+});
+
+$("#expenseType").change(function () {
+    Search();
+});
+
+function Search() {
     var Result = $.grep(InternalExpensesArray, function (v) {
         return v.branch == $('#Branch').val();
     })
@@ -300,7 +308,12 @@ $("#search").click(function () {
             tr.push("<td>" + expenseType[0].expenseName + "</td>");
             tr.push("<td>" + Result[i].expenseAmount + " </td>");
             tr.push("<td>" + getFormattedDate(new Date(Result[i].paymentDate)) + "</td>");
-            tr.push("<td>" + Result[i].description + "</td>");
+            if (Result[i].description != null)
+                tr.push("<td>" + Result[i].description + "</td>");
+            else
+                tr.push("<td></td>");
+
+
 
 
             var td = [];
@@ -331,7 +344,7 @@ $("#search").click(function () {
         $('.tblInternalExpense').append($(tr.join('')));
     }
 
-});
+};
 
 function ListInternalExpensesDetails() {
     $("#wait").css("display", "block");
@@ -370,10 +383,14 @@ function ListInternalExpensesDetails() {
 
                     tr.push('<tr>');
                     tr.push("<td>" + Result[i].employeeId + "</td>");
-                    tr.push("<td>" + expenseType[0].expenseName+ "</td>");
+                    tr.push("<td>" + expenseType[0].expenseName + "</td>");
                     tr.push("<td>" + Result[i].expenseAmount + " </td>");
                     tr.push("<td>" + getFormattedDate(new Date(Result[i].paymentDate)) + "</td>");
-                    tr.push("<td>" + Result[i].description + "</td>");
+
+                    if (Result[i].description != null)
+                        tr.push("<td>" + Result[i].description + "</td>");
+                    else
+                        tr.push("<td></td>");
 
 
                     var td = [];

@@ -35,15 +35,6 @@ var TblSoldProduct = $("#tblSoldProduct").DataTable(
             }
         },
         {
-            extend: 'copy',
-            filename: function () {
-                return "Sold Products Report"
-            },
-            title: function () {
-                return "Sold Products Report"
-            }
-        },
-        {
             extend: 'print',
             filename: function () {
                 return "Sold Products Report"
@@ -200,9 +191,9 @@ function ListSoldProductDetails() {
                     '<label> ' + branch[0].branchName + ' </label>',
                     '<label> ' + ProdList[i].pricePerProduct.toFixed(2) + ' </label>',
                     '<label> ' + ProdList[i].soldPricePerProduct.toFixed(2) + ' </label>',
+                    '<label> ' + ProdList[i].quantity + ' </label>',
                     '<label> ' + ProdList[i].totalSoldPrice.toFixed(2) + ' </label>',
                     '<label> ' + getFormattedDate(new Date(ProdList[i].soldDate)) + ' </label>'
-                        /* ,'<label> ' + getFormattedDate(new Date(Result[i].membershipExpirationDate)) + ' </label>'*/
                     ]).draw(false);
 
                 }

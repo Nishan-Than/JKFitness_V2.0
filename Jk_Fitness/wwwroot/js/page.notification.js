@@ -34,8 +34,6 @@ function LisNotificationsDetails() {
                 MemberShipExpirationThisMonthList = Result.memberShipExpirationThisMonth;
                 MemberShipExpirationNextMonthList = Result.memberShipExpirationNextMonth;
                 MemberShipExpirationLastMonthList = Result.memberShipExpirationLastMonth;
-               /* document.getElementById('PackageExpirationLastMonth').click();*/
-                /*$("#BranchforSearch").trigger("change");*/
                 SearchByBranchCode();
             } else {
 
@@ -48,7 +46,6 @@ function LisNotificationsDetails() {
 
 
 $("#PackageExpirationLastMonth").click(function () {
-    //alert("Notification");
     if (PackageExpirationLastMonth.length != 0) {
         var tr = [];
         for (var i = 0; i < PackageExpirationLastMonth.length; i++) {
@@ -75,7 +72,6 @@ $("#PackageExpirationLastMonth").click(function () {
 });
 
 $("#PackageExpirationThisMonth").click(function () {
-    //alert("Notification");
     if (PackageExpirationThisMonth.length != 0) {
         var tr = [];
         for (var i = 0; i < PackageExpirationThisMonth.length; i++) {
@@ -102,7 +98,6 @@ $("#PackageExpirationThisMonth").click(function () {
 });
 
 $("#PackageExpirationNextMonth").click(function () {
-    //alert("Notification");
     if (PackageExpirationNextMonth.length != 0) {
         var tr = [];
         for (var i = 0; i < PackageExpirationNextMonth.length; i++) {
@@ -130,7 +125,6 @@ $("#PackageExpirationNextMonth").click(function () {
 
 
 $("#MembershipExpirationLastMonth").click(function () {
-    //alert("Notification");
     if (MemberShipExpirationLastMonth.length != 0) {
         var tr = [];
         for (var i = 0; i < MemberShipExpirationLastMonth.length; i++) {
@@ -157,7 +151,6 @@ $("#MembershipExpirationLastMonth").click(function () {
 });
 
 $("#MembershipExpirationThisMonth").click(function () {
-    //alert("Notification");
     if (MemberShipExpirationThisMonth.length != 0) {
         var tr = [];
         for (var i = 0; i < MemberShipExpirationThisMonth.length; i++) {
@@ -184,7 +177,6 @@ $("#MembershipExpirationThisMonth").click(function () {
 });
 
 $("#MembershipExpirationNextMonth").click(function () {
-    //alert("Notification");
     if (MemberShipExpirationNextMonth.length != 0) {
         var tr = [];
         for (var i = 0; i < MemberShipExpirationNextMonth.length; i++) {

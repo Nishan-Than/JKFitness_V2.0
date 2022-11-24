@@ -88,7 +88,7 @@ function LoadTrainerTimeSlot() {
                         else if (Result[i].status == "Declined")
                             tr.push("<td><strong style=\"color:red\">Declined</strong></td>");
                         else
-                            tr.push("<td>" + Result[i].status + "</td>");
+                            tr.push("<td><strong>" + Result[i].status + "</strong></td>");
                     }
                    
                     tr.push('</tr>');
@@ -170,7 +170,7 @@ function NewTrainingRequest(TimeSlot) {
                     timer: 1500
                 });
                 LoadTrainerTimeSlot();
-                LoadTrainingHistroy($('#Month').val());
+                LoadTrainingHistroy($('#Year').val(), $('#Month').val());
             } else {
                 Swal.fire({
                     icon: 'error',

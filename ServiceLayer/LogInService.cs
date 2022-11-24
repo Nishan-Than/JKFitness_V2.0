@@ -298,7 +298,7 @@ namespace ServiceLayer
                         webResponce = new WebResponce()
                         {
                             Code = 0,
-                            Message = "Not Active Employee"
+                            Message = "Not an Active Member"
                         };
                     }
 

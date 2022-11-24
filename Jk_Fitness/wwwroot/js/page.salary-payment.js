@@ -1,6 +1,7 @@
 ﻿$(document).ready(function () {
     LoadMonths();
     $("#AdvanceSalary").attr("hidden", true);
+    $('#btnSalaryPay').attr('disabled', 'disabled');
     $("#PaymentDate").val(getFormattedDate(new Date()));
 });
 
@@ -75,9 +76,8 @@ $('#btnSearch').click(function () {
                         $("#tblAdvSalary").css("display", "table");
 
                         $("#AdvanceSalary").attr("hidden", false);
-
                     }
-
+                    $('#btnSalaryPay').removeAttr('disabled');
 
                 } else {
                     Swal.fire({
@@ -85,6 +85,7 @@ $('#btnSearch').click(function () {
                         title: 'Oops...',
                         text: myData.message,
                     });
+                    ClearForSearch();
                 }
             },
             error: function (jqXHR, exception) {
@@ -233,6 +234,24 @@ function Clear() {
     $("#AdvanceSalary").attr("hidden", true);
 }
 
+function ClearForSearch() {
+    $('#Fname').val("");
+    $('#Lname').val("");
+    $('#Branch').val("");
+    $('#Fsalary').val("");
+    $("#Commission").val("");
+    $("#PTAmount").val("");
+    $("#SupplimentCommission").val("");
+    $("#Adamount").val("");
+    $("#Tamount").val("");
+    $("#PaymentDate").val(getFormattedDate(new Date()));
+    $("#AdvanceSalary").attr("hidden", true);
+}
+
 $("#btnClear").click(function () {
-    Clear();
+    Clear();    
 })
+
+$("#Months").change(function () {
+    $('#btnSalaryPay').attr('disabled', 'disabled');
+});

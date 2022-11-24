@@ -31,15 +31,6 @@ var TblMember = $("#tblMember").DataTable(
             }
         },
         {
-            extend: 'copy',
-            filename: function () {
-                return "Membersip Payment Report"
-            },
-            title: function () {
-                return "Membersip Payment Report"
-            }
-        },
-        {
             extend: 'print',
             filename: function () {
                 return "Membersip Payment Report"
