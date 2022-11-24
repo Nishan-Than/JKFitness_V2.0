@@ -82,6 +82,8 @@
     <input type="hidden" id="add" value="@ViewBag.Add" />
     <input type="hidden" id="edit" value="@ViewBag.Edit" />
     <input type="hidden" id="delete" value="@ViewBag.Delete" />
+    <input type="hidden" id="ListProvinces" value="@Url.Action("ListProvinces", "Membership")" />
+    <input type="hidden" id="ListDistricts" value="@Url.Action("ListDistricts", "Membership")" />
 
 </div>
 
@@ -123,7 +125,7 @@
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="control-label col-md-3 col-sm-3 ">Full Name</label>
+                                <label class="control-label col-md-3 col-sm-3 ">Full Name<span class="error" style="color: red;">*</span></label>
                                 <div class="col-md-9 col-sm-9">
                                     <input type="text" required id="fullName" class="form-control">
                                 </div>
@@ -156,7 +158,7 @@
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="control-label col-md-3 col-sm-3 ">Contact No</label>
+                                <label class="control-label col-md-3 col-sm-3 ">Contact No<span class="error" style="color: red;">*</span></label>
                                 <div class="col-md-9 col-sm-9">
                                     <input type="text" required id="ContactNo" class="form-control" placeholder="771234567">
                                     <span id="ContactAlert" class="error" style="color: red;display:none">
@@ -165,7 +167,7 @@
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="control-label col-md-3 col-sm-3 ">Email</label>
+                                <label class="control-label col-md-3 col-sm-3 ">Email<span class="error" style="color: red;">*</span></label>
                                 <div class="col-md-9 col-sm-9">
                                     <input type="text" required id="Email" class="form-control">
                                     <span id="EmailAlert" class="error" style="color: red;display:none">
@@ -186,25 +188,25 @@
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="control-label col-md-3 col-sm-3">District</label>
-                                <div class="col-md-9 col-sm-9">
-                                    <input type="text" required id="District" class="form-control" placeholder="District">
-                                </div>
-                            </div>
-                            <div class="form-group row ">
                                 <label class="control-label col-md-3 col-sm-3 ">Province</label>
                                 <div class="col-md-9 col-sm-9">
-                                    <input type="text" id="Province" class="form-control" placeholder="Province">
+                                    <select class="form-control" id="Province"></select>
                                 </div>
                             </div>
                             <div class="form-group row ">
-                                <label class="control-label col-md-3 col-sm-3 ">Payment</label>
+                                <label class="control-label col-md-3 col-sm-3">District</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <select class="form-control" id="District"></select>
+                                </div>
+                            </div>
+                            <div class="form-group row ">
+                                <label class="control-label col-md-3 col-sm-3 ">Payment<span class="error" style="color: red;">*</span></label>
                                 <div class="col-md-9 col-sm-9">
                                     <input type="text" id="Payment" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <label class="control-label col-md-3 col-sm-3 ">Payment Date</label>
+                                <label class="control-label col-md-3 col-sm-3 ">Payment Date<span class="error" style="color: red;">*</span></label>
                                 <div class="input-group date col-md-9 col-sm-9" id="paymentdate" data-target-input="nearest">
                                     <input type="text" id="Pdate" class="form-control datetimepicker-input" data-target="#paymentdate" data-toggle="datetimepicker" />
                                     <div class="input-group-append" data-target="#paymentdate" data-toggle="datetimepicker">

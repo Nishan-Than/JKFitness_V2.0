@@ -8,6 +8,7 @@
     else {
         $("#btnAdd").attr('hidden', true);
     }
+    LoadProvinces();
 });
 
 $(function () {
@@ -348,7 +349,7 @@ function EditProvisionalMember(Id) {
         $("#Email").val(Result['email']);
         $("#HouseNo").val(Result['houseNo']);
         $("#Street").val(Result['street']);
-        $("#District").val(Result['district']);
+       
         $("#Province").val(Result['province']);
         $("#Payment").val(Result['houseNo']);
         $("#Street").val(Result['street']);
@@ -358,7 +359,39 @@ function EditProvisionalMember(Id) {
         $("#Pdate").val(getFormattedDate(new Date(Result.attendDate)));
         $("#CreatedBy").val(Result['createdBy']);
         $("#CreatedDate").val(Result['createdDate']);
-      
+
+        $('#District').find('option').remove().end();
+        District = $('#District');
+
+        $.ajax({
+            type: 'POST',
+            url: $("#ListDistricts").val(),
+            dataType: 'json',
+            data: '{"ProvinceId": "' + $("#Province").val() + '"}',
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                var myData = jQuery.parseJSON(JSON.stringify(response));
+                if (myData.code == "1") {
+                    var Result1 = myData.data;
+
+                    $.each(Result1, function () {
+                        District.append($("<option/>").val(this.id).text(this.name));
+                    });
+                    $("#District").val(Result['district']);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!',
+                    });
+                }
+
+            },
+            error: function (jqXHR, exception) {
+
+            }
+        });
+
         $("#wait").css("display", "none");
         $('#MemModal').modal('show');
     } else {
@@ -832,4 +865,75 @@ function PhoneNumberValidate(Num) {
 function validateEmail(email) {
     const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
+}
+
+$("#Province").change(function () {
+    ListDistricts(this.value);
+});
+function LoadProvinces() {
+    $('#Province').find('option').remove().end();
+    Province = $('#Province');
+
+    $.ajax({
+        type: 'GET',
+        url: $("#ListProvinces").val(),
+        dataType: 'json',
+        headers: {
+            "Authorization": "Bearer " + sessionStorage.getItem('token'),
+        },
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+
+                $.each(Result, function () {
+                    Province.append($("<option/>").val(this.id).text(this.name));
+                });
+                ListDistricts($("#Province").val());
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: myData.message,
+                });
+            }
+        },
+        error: function (jqXHR, exception) {
+        }
+    });
+}
+
+function ListDistricts(Id) {
+
+    $('#District').find('option').remove().end();
+    District = $('#District');
+
+    $.ajax({
+        type: 'POST',
+        url: $("#ListDistricts").val(),
+        dataType: 'json',
+        data: '{"ProvinceId": "' + Id + '"}',
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result = myData.data;
+
+                $.each(Result, function () {
+                    District.append($("<option/>").val(this.id).text(this.name));
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            }
+
+        },
+        error: function (jqXHR, exception) {
+
+        }
+    });
 }

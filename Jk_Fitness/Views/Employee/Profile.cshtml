@@ -44,15 +44,15 @@
                     </div>
                 </div>
                 <div class="form-group row ">
-                    <label class="control-label col-md-3 col-sm-3">District</label>
+                    <label class="control-label col-md-3 col-sm-3 ">Province</label>
                     <div class="col-md-9 col-sm-9">
-                        <input type="text" required id="District" class="form-control">
+                        <select class="form-control" id="Province"></select>
                     </div>
                 </div>
                 <div class="form-group row ">
-                    <label class="control-label col-md-3 col-sm-3 ">Province</label>
+                    <label class="control-label col-md-3 col-sm-3">District</label>
                     <div class="col-md-9 col-sm-9">
-                        <input type="text" id="Province" class="form-control">
+                        <select class="form-control" id="District"></select>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -110,14 +110,16 @@
                     </div>
                 </div>
             </div>
-       
+
             <div id="wait" class="loading-gif"><img src="~/dist/img/Loading.gif" width="70" height="70" /><br></div>
         </div>
         <!-- /.card -->
     </div>
     <!-- /.col -->
     <input type="hidden" id="GetProfileDetails" value="@Url.Action("GetProfileDetails","Employee")" />
- 
+    <input type="hidden" id="ListProvinces" value="@Url.Action("ListProvinces", "Membership")" />
+    <input type="hidden" id="ListDistricts" value="@Url.Action("ListDistricts", "Membership")" />
+
 </div>
 <script src="~/js/page.profile.js"></script>
 
