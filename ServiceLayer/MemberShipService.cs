@@ -89,12 +89,12 @@ namespace ServiceLayer
 
                 var PwdMail = new MailRequest();
                 PwdMail.ToEmail = Member.Email;
-                PwdMail.Subject = "New Office Account";
+                PwdMail.Subject = "New Member Account";
 
                 StringBuilder Pwdbody = new StringBuilder();
 
                 Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Dear " + Member.FirstName + ",</p>");
-                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You can now login at JK Fitness Backoffice web application.</p>");
+                Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>You can now login at JK Fitness web application.</p>");
                 Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Website Url: https://jkfitness.lk/ </p>");
                 Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Username: " + Member.Email + "</p>");
                 Pwdbody.AppendLine("<p style='line - height: 18px; font - family: verdana; font - size: 12px;'>Password: " + MemPwd + "</p>");

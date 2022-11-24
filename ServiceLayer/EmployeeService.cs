@@ -519,7 +519,7 @@ namespace ServiceLayer
                         }
                         else
                         {
-                            ReqTrainer = uow.DbContext.RequestTrainers.Where(x => x.TrainingTimeSlot == timeSlot && x.TrainingDate == training.Date && x.EmployeeId == training.EmployeeId.Trim()).FirstOrDefault();
+                            ReqTrainer = uow.DbContext.RequestTrainers.Where(x => x.TrainingTimeSlot == timeSlot && x.TrainingDate == training.Date && x.EmployeeId == training.EmployeeId.Trim() && x.RequestStatus != "Declined").FirstOrDefault();
                             if (ReqTrainer != null)
                             {
                                 traning.Status = "Not Available";
@@ -738,7 +738,7 @@ namespace ServiceLayer
                         {
                             traning1.Status = ReqTrainer1.RequestStatus;
                             traning1.MemberId = ReqTrainer1.MemberId;
-                            traning1.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == ReqTrainer1.MemberId).Select(x => x.FirstName).FirstOrDefault();
+                            traning1.MemberName = uow.DbContext.MemberShips.Where(x => x.MemberId == ReqTrainer1.MemberId).Select(x => x.FirstName + " " + x.LastName).FirstOrDefault();
                             traning1.Id = ReqTrainer1.RequestId;
                         }
                         else

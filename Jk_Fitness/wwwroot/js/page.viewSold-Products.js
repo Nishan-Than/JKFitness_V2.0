@@ -151,6 +151,7 @@ function ListSoldProductDetails() {
                     tr.push("<td>" + branch[0].branchName + "</td>");
                     tr.push("<td>" + ProdList[i].pricePerProduct.toFixed(2) + "</td>");
                     tr.push("<td>" + ProdList[i].soldPricePerProduct.toFixed(2) + "</td>");
+                    tr.push("<td>" + ProdList[i].quantity + "</td>");
                     tr.push("<td>" + ProdList[i].totalSoldPrice.toFixed(2) + "</td>");
                     tr.push("<td>" + getFormattedDate(new Date(ProdList[i].soldDate)) + "</td>");                  
 
