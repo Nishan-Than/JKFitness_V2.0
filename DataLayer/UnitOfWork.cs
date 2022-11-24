@@ -32,6 +32,8 @@ namespace DataLayer
         private GenericRepository<PersonalTraining> personalTrainingRepository;
         private GenericRepository<ProvisionalMember> provisionalMemberRepository;
         private GenericRepository<RequestTrainers> requestTrainersRepository;
+        private GenericRepository<Provinces> provincesRepository;
+        private GenericRepository<Districts> districtsRepository;
         public GenericRepository<Branch> BranchRepository
         {
             get 
@@ -374,6 +376,46 @@ namespace DataLayer
                         this.requestTrainersRepository = new GenericRepository<RequestTrainers>(context);
                     }
                     return requestTrainersRepository;
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    throw;
+                }
+            }
+        }
+
+        public GenericRepository<Provinces> ProvincesRepository
+        {
+            get
+            {
+                try
+                {
+                    if (this.provincesRepository == null)
+                    {
+                        this.provincesRepository = new GenericRepository<Provinces>(context);
+                    }
+                    return provincesRepository;
+                }
+                catch (Exception ex)
+                {
+                    ex.ToString();
+                    throw;
+                }
+            }
+        }
+
+        public GenericRepository<Districts> DistrictsRepository
+        {
+            get
+            {
+                try
+                {
+                    if (this.districtsRepository == null)
+                    {
+                        this.districtsRepository = new GenericRepository<Districts>(context);
+                    }
+                    return districtsRepository;
                 }
                 catch (Exception ex)
                 {

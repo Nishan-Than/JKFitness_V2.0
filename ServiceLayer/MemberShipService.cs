@@ -793,5 +793,75 @@ namespace ServiceLayer
             return webResponce;
         }
 
+        public WebResponce ListProvinces()
+        {
+            try
+            {
+                List<Provinces> provinces = uow.ProvincesRepository.GetAll().ToList();
+
+                if (provinces != null && provinces.Count > 0)
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success",
+                        Data = provinces
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Seems Like Doesn't have Records!"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
+        public WebResponce ListDistricts(Districts districts)
+        {
+            try
+            {
+                List<Districts> districts1 = uow.DistrictsRepository.GetAll().Where(x => x.ProvinceId == districts.ProvinceId).ToList();
+
+                if (districts1 != null && districts1.Count > 0)
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 1,
+                        Message = "Success",
+                        Data = districts1
+                    };
+                }
+                else
+                {
+                    webResponce = new WebResponce()
+                    {
+                        Code = 0,
+                        Message = "Seems Like Doesn't have Records!"
+                    };
+                }
+            }
+            catch (Exception ex)
+            {
+                webResponce = new WebResponce()
+                {
+                    Code = -1,
+                    Message = ex.Message.ToString()
+                };
+            }
+            return webResponce;
+        }
+
     }
 }

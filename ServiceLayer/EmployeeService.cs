@@ -264,8 +264,8 @@ namespace ServiceLayer
                     Empl.LastName = employee.LastName.Trim();
                     Empl.HouseNo = employee.HouseNo.Trim();
                     Empl.Street = employee.Street.Trim();
-                    Empl.District = employee.District.Trim();
-                    Empl.Province = employee.Province.Trim();
+                    Empl.District = employee.District;
+                    Empl.Province = employee.Province;
                     if (employee.Image != null)
                     {
                         Empl.Image = employee.Image;
