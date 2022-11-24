@@ -4,6 +4,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style>
+    .dataTables_filter {
+        visibility: hidden !important;
+    }
+</style>
+
 <div class="row">
     <div class="col-12">
         <div class="card">
@@ -55,8 +61,6 @@
 
                         </tr>
                     </thead>
-                    @*<tbody id="tbodyid">
-                        </tbody>*@
                 </table>
                 <div class="msg-block" id="noRecords">
                     <label>No Records found.</label>
