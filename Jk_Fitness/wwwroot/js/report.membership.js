@@ -326,19 +326,20 @@ $("#GenderSearch").change(function () {
         TblMember.clear()
             .draw();
 
-        var tr = [];
-        var memberid;
-
-        if (Result[i].memberId.toString().length == 1)
-            memberid = "000" + Result[i].memberId.toString();
-        else if (Result[i].memberId.toString().length == 2)
-            memberid = "00" + Result[i].memberId.toString();
-        else if (Result[i].memberId.toString().length == 3)
-            memberid = "0" + Result[i].memberId.toString();
-        else
-            memberid = Result[i].memberId;
+        var tr = [];      
 
         for (var i = 0; i < Result.length; i++) {
+
+            var memberid;
+
+            if (Result[i].memberId.toString().length == 1)
+                memberid = "000" + Result[i].memberId.toString();
+            else if (Result[i].memberId.toString().length == 2)
+                memberid = "00" + Result[i].memberId.toString();
+            else if (Result[i].memberId.toString().length == 3)
+                memberid = "0" + Result[i].memberId.toString();
+            else
+                memberid = Result[i].memberId;
 
             TblMember.row.add([
                 '<label> ' + memberid + ' </label>',
@@ -396,20 +397,20 @@ $("#StatusforSearch").change(function () {
     if (Result.length != 0) {
         TblMember.clear()
             .draw();
-        var tr = [];
-
-        var memberid;
-
-        if (Result[i].memberId.toString().length == 1)
-            memberid = "000" + Result[i].memberId.toString();
-        else if (Result[i].memberId.toString().length == 2)
-            memberid = "00" + Result[i].memberId.toString();
-        else if (Result[i].memberId.toString().length == 3)
-            memberid = "0" + Result[i].memberId.toString();
-        else
-            memberid = Result[i].memberId;
+        var tr = [];       
 
         for (var i = 0; i < Result.length; i++) {
+
+            var memberid;
+
+            if (Result[i].memberId.toString().length == 1)
+                memberid = "000" + Result[i].memberId.toString();
+            else if (Result[i].memberId.toString().length == 2)
+                memberid = "00" + Result[i].memberId.toString();
+            else if (Result[i].memberId.toString().length == 3)
+                memberid = "0" + Result[i].memberId.toString();
+            else
+                memberid = Result[i].memberId;
 
             TblMember.row.add([
                 '<label> ' + memberid + ' </label>',
@@ -493,17 +494,17 @@ function SearchMembership() {
         TblMember.clear().draw();
         var tr = [];
 
-        var memberid;
-        if (Result[i].memberId.toString().length == 1)
-            memberid = "000" + Result[i].memberId.toString();
-        else if (Result[i].memberId.toString().length == 2)
-            memberid = "00" + Result[i].memberId.toString();
-        else if (Result[i].memberId.toString().length == 3)
-            memberid = "0" + Result[i].memberId.toString();
-        else
-            memberid = Result[i].memberId;
-
         for (var i = 0; i < Result.length; i++) {
+
+            var memberid;
+            if (Result[i].memberId.toString().length == 1)
+                memberid = "000" + Result[i].memberId.toString();
+            else if (Result[i].memberId.toString().length == 2)
+                memberid = "00" + Result[i].memberId.toString();
+            else if (Result[i].memberId.toString().length == 3)
+                memberid = "0" + Result[i].memberId.toString();
+            else
+                memberid = Result[i].memberId;
 
             TblMember.row.add([
                 '<label> ' + memberid + ' </label>',
