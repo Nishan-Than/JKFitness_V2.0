@@ -112,7 +112,6 @@ function LoadProvinces() {
                     Province.append($("<option/>").val(this.id).text(this.name));
                 });
                 ListDistricts($("#Province").val());
-                LoadProfile();
             } else {
                 Swal.fire({
                     icon: 'error',
@@ -145,6 +144,7 @@ function ListDistricts(Id) {
                 $.each(Result, function () {
                     District.append($("<option/>").val(this.id).text(this.name));
                 });
+                LoadProfile();
             } else {
                 Swal.fire({
                     icon: 'error',

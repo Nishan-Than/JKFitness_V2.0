@@ -45,6 +45,7 @@ $('#btnAdd').click(function () {
     $("#FreeMembership").attr("disabled", false);
     $("#JoinDate").attr("disabled", false);
     LoadGender();
+    LoadProvinces();
 });
 
 $(function () {

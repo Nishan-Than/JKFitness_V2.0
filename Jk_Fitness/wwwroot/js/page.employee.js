@@ -48,6 +48,7 @@ $('#btnAdd').click(function () {
     $('#EveningIn').val('12:00 PM');
     $('#EveningOut').val('11:59 PM');
     $("#MemFind").css("display", "flex");
+    LoadProvinces();
 });
 
 function ListEmployeeDetails() {
@@ -210,6 +211,34 @@ $('#btnAddEmployee').click(function () {
         formData.append("file", files[i]);
     }
 
+    $.ajax({
+        type: 'POST',
+        url: $("#ListDistricts").val(),
+        dataType: 'json',
+        data: '{"ProvinceId": "' + $("#Province").val() + '"}',
+        contentType: 'application/json; charset=utf-8',
+        success: function (response) {
+            var myData = jQuery.parseJSON(JSON.stringify(response));
+            if (myData.code == "1") {
+                var Result1 = myData.data;
+
+                $.each(Result1, function () {
+                    District.append($("<option/>").val(this.id).text(this.name));
+                });
+                $("#District").val(Result['district']);
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            }
+
+        },
+        error: function (jqXHR, exception) {
+
+        }
+    });
     var Emp = {
         EmployeeId: $('#EmployeeId').val(),
         Salutation: $('#Salutation').val(),
